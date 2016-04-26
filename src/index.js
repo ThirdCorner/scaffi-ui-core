@@ -1,6 +1,7 @@
 'use strict';
 
-import angular from 'angular';
+var angular = require("angular");
+require('angular-aria');
 import 'angular-aria';
 import 'angular-animate';
 import 'angular-material';
