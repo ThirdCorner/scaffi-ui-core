@@ -1,0 +1,9 @@
+<div id="test-ui-harness" style="position: fixed; bottom: 0; left: 0; right: 0; max-height: 200px; overflow-y: scroll;" ng-class="{hidden: vm.isTesting === false}">
+    <div class="request {{'type-' + response.type}}" ng-class="{error: response.error}" ng-repeat="response in vm.responses">
+        <span class="type">{{response.type}}</span>
+        <span class="request-url">{{response.url}}</span>
+        <span class="response">{{response.data}}</span>
+    </div>
+    <button id="start-test-exchange-recording" ng-click="vm.startWatching()">Record</button>
+    <button id="stop-test-exchange-recording" ng-click="vm.stopWatching()">Stop</button>
+</div>
