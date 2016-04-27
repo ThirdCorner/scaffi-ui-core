@@ -123,7 +123,7 @@ class DataCollection extends Array {
 	_setSocketConnection() {
 		// add destroy listeners
 
-		var listener = "create:" + this._service.getNamespace();
+		var listener = "create:" + this._service.getPropertyName();
 		if(this._hasBaseNamespace()){
 			listener += this._getBaseNamespace();
 		}

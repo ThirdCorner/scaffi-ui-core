@@ -9,9 +9,9 @@ var ID_PROP, API_BASE
 
 
 class AbstractService {
-    constructor(http, route, $state, $rootScope, $injector) {
-        this.http = http;
-        this.route = route;
+    constructor($http, $state, $rootScope, $injector) {
+        this.$http = $http;
+        this.route = this.getApiRouteName();
         this.$state = $state;
         this.$rootScope = $rootScope;
 
@@ -22,6 +22,13 @@ class AbstractService {
         API_BASE = ScaffiCore.config.getApiBase();
         
     }
+    getApiRouteName(){
+        throw new Error(`This service needs a function that returns the api route name`);
+    }
+    getPropertyName(){
+        throw new Error(`This service needs a function that returns the property name that can be found in a json structure`);
+    }
+    
     getNamespace(){
         return this.namespace;
     }
@@ -41,7 +48,7 @@ class AbstractService {
     //  */
     // fetchList() {
     //     var that = this;
-    //     return this.http.get(API_BASE + `${this.route}`).then( (response)=> {
+    //     return this.$http.get(API_BASE + `${this.route}`).then( (response)=> {
     //         console.log(that.route);
     //         that.sendToTestUIHarnessResponse(response);
     //         if(that.isSuccess(response)) {
@@ -56,7 +63,7 @@ class AbstractService {
 
     call(url){
         var that = this;
-        return this.http.get(url).then((response)=>{
+        return this.$http.get(url).then((response)=>{
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data); 
@@ -77,7 +84,7 @@ class AbstractService {
         if(id) {
             url += `/${id}`;
         }
-        return this.http.get(url).then( (response)=> {
+        return this.$http.get(url).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
@@ -102,7 +109,7 @@ class AbstractService {
         if(id) {
             url += `/${id}`;
         }
-        return this.http.get(url).then( (response)=> {
+        return this.$http.get(url).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
@@ -155,7 +162,7 @@ class AbstractService {
             }
             ParserHelper.convertToDateStrings(p);
         }
-        return this.http.get(API_BASE + `${this.route}`, {params: p}).then( (response)=> {
+        return this.$http.get(API_BASE + `${this.route}`, {params: p}).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
@@ -195,7 +202,7 @@ class AbstractService {
         newResource.CreatedOn = moment().format();
         newResource.ModifiedOn = moment().format();
 
-        return this.http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
+        return this.$http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
 
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
@@ -228,7 +235,7 @@ class AbstractService {
         ParserHelper.convertToDB(updatedResource);
         updatedResource.ModifiedOn = moment().format();
 
-        return this.http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
+        return this.$http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
 	            that.$rootScope.showSuccessToast(`Record #${updatedResource[ID_PROP]} successfully updated!`);
@@ -243,7 +250,7 @@ class AbstractService {
 
     delete(id) {
         var that = this;
-        return this.http.delete( API_BASE+ `${this.route}/${id}`).then( (response)=> {
+        return this.$http.delete( API_BASE+ `${this.route}/${id}`).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
 	            that.$rootScope.showSuccessToast(`Record #${id} successfully deleted!`);

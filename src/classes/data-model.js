@@ -13,7 +13,7 @@ class DataModel {
 		ID_PROP = ScaffiCore.config.getIdPropertyName();
 		
 		this._service = Service;
-		this._namespace = this._service.getNamespace();
+		this._namespace = this._service.getPropertyName();
 		
 		this._stateModel = stateModel;
 		
@@ -111,7 +111,7 @@ class DataModel {
 			if(childService) {
 				var that = this;
 				value = new DataCollection(childService, value, this._stateModel);
-				this._stateModel.setBaseLevel(this._service.getNamespace() + "#" + this[ID_PROP]);
+				this._stateModel.setBaseLevel(this._service.getPropertyName() + "#" + this[ID_PROP]);
 				value._setParentLinkFunction((model)=>{
 					model[that._namespace + "Id"] = that[ID_PROP];
 				});
@@ -135,7 +135,7 @@ class DataModel {
 		}
 
 		var that = this;
-		this._stateModel.getSocket().on( "update:" + this._service.getNamespace() + "#" + this[ID_PROP], function(struct){
+		this._stateModel.getSocket().on( "update:" + this._service.getPropertyName() + "#" + this[ID_PROP], function(struct){
 			if(_.isObject(struct) && !_.isArray(struct)){
 				_.each(struct, (value,name)=>{
 					that[name] = value;
@@ -143,13 +143,13 @@ class DataModel {
 				that._events.trigger("update", struct);
 			}
 		});
-		this._stateModel.getSocket().on("delete:" + this._service.getNamespace() + "#" + this[ID_PROP], function(){
+		this._stateModel.getSocket().on("delete:" + this._service.getPropertyName() + "#" + this[ID_PROP], function(){
 			that._events.trigger("delete");
 
 		});
 
 
-		this._stateModel.getSocket().on("state:" + this._service.getNamespace() + "#" + this[ID_PROP], function(struct){
+		this._stateModel.getSocket().on("state:" + this._service.getPropertyName() + "#" + this[ID_PROP], function(struct){
 			that.setState(struct.state);
 		});
 		
