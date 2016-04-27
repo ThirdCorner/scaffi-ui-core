@@ -134,14 +134,14 @@ ParserHelper = {
      */
     convertToDateStrings(obj) {
 
-        if(!this.isContainer(obj)) {
+        if(!ParserHelper.isContainer(obj)) {
             return obj;
         }
 
         _.each(obj, function(value, key){
 
-            if(this.isContainer(value)){
-                this.convertToDateStrings(value);
+            if(ParserHelper.isContainer(value)){
+                ParserHelper.convertToDateStrings(value);
 
             }
 
@@ -173,7 +173,7 @@ ParserHelper = {
         _.each(structure, function(value, key){
             switch(true) {
                 case ParserHelper.isContainer(value):
-                    this.convertToDB(value);
+                    ParserHelper.convertToDB(value);
                     break;
                 case ParserHelper.isDate(value):
                     structure[key] = moment(value).format('YYYY-MM-DD');
@@ -190,14 +190,13 @@ ParserHelper = {
         return structure;
     },
     convertToApp(structure){
-
         if(!ParserHelper.isContainer(structure)) {
             return structure;
         }
         _.each(structure, function(value, key){
 
             if(ParserHelper.isContainer(value)) {
-                this.convertToApp(value);
+                ParserHelper.convertToApp(value);
             } else {
                 switch(true) {
                     case ParserHelper.isNumberString(value):
