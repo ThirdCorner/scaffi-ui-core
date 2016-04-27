@@ -5,9 +5,12 @@ import _ from 'lodash';
 import ParserHelper from '../helpers/parser-helper';
 
 import ScaffiCore from '../index.js';
+import {Inject} from '../ng-decorators';
 var ID_PROP, API_BASE
 
-
+//start-non-standard
+@Inject('$http', '$state', '$rootScope', '$injector')
+//end-non-standard
 class AbstractService {
     constructor($http, $state, $rootScope, $injector) {
         this.$http = $http;
