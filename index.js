@@ -1,7 +1,6 @@
 'use strict';
 
 var angular = require("angular");
-require('angular-aria');
 import 'angular-aria';
 import 'angular-animate';
 import 'angular-material';
@@ -21,16 +20,16 @@ import EnvironmentHelper from './src/helpers/environment-helper';
 import ParserHelper from './src/helpers/parser-helper';
 import StateModel from './src/classes/state-model';
 
-import './config/config.dev';
-import './config/config.prototype';
-import './config/config.test';
-import './config/config.prod';
-import './config/config';
+import './src/config/config.dev';
+import './src/config/config.prototype';
+import './src/config/config.test';
+import './src/config/config.prod';
+import './src/config/config';
 
 
-import './components/components';
-import './directives/directives';
-import './factories/factories';
+import './src/components/components';
+import './src/directives/directives';
+import './src/factories/factories';
 
 class CoreLoader {
 	constructor(args) {
