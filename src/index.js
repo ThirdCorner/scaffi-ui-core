@@ -57,6 +57,12 @@ class CoreLoader {
 
 
 	}
+	getConfigProperty(name){
+		if(_.has(this.config, name)) {
+			return this.config[name];
+		}
+		return null;
+	}
 	getConfig(){
 		return this.config;
 	}
@@ -106,22 +112,22 @@ var returns = {
 		},
 		getLocalhostAddress(){
 			this._throwLoadError();
-			return "localhost:" + coreLoader.getConfig().uiLocalhostPort;
+			return "localhost:" + coreLoader.getConfigProperty("uiLocalhostPort");
 		},
 		getIdPropertyName(){
 			this._throwLoadError();
-			return coreLoader.getConfig().idName;
+			return coreLoader.getConfigProperty("idName");
 		},
 		getParentIdName(parentName){
 			this._throwLoadError();
 			/*
 				TODO this needs to be transformed
 			 */
-			return parentName + coreLoader.getConfig().idName;
+			return parentName + coreLoader.getConfigProperty("idName");
 		},
 		getApiBase(){
 			this._throwLoadError();
-			return coreLoader.getConfig().apiRoute;
+			return coreLoader.getConfigProperty("apiRoute");
 		},
 		getEnvironment(){
 			return coreLoader.getEnvironment();
