@@ -21,6 +21,7 @@ import EnvironmentHelper from './helpers/environment-helper';
 import ParserHelper from './helpers/parser-helper';
 import StateModel from './classes/state-model';
 import MockHttp from './classes/mock-http';
+import AbstractService from './classes/abstract-service';
 
 import './config/config.dev';
 import './config/config.prototype';
@@ -134,4 +135,4 @@ var returns = {
 
 export default returns;
 import {Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory} from './ng-decorators';
-export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper, ParserHelper, StateModel, MockHttp, Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory};
+export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper, ParserHelper, StateModel, MockHttp, AbstractService, Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory};
