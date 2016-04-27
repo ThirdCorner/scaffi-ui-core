@@ -58,8 +58,8 @@ class CoreLoader {
 
 	}
 	getConfigProperty(name){
-		if(_.has(this.config, name)) {
-			return this.config[name];
+		if(_.has(this.config.config, name)) {
+			return this.config.config[name];
 		}
 		return null;
 	}
