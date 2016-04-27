@@ -5,7 +5,6 @@
  */
 import 'angular-mocks';
 import angular from 'angular';
-import 'app/services/mock-services';
 import {Config, Run, Inject} from '../ng-decorators'; // jshint unused: false
 import ScaffiCore from '../index.js';
 
