@@ -22,7 +22,11 @@ class Input {
 
 	}
 	compile(element, attrs){
-		
+
+		if(attrs.class.indexOf("md-datepicker-input") !== -1) {
+			attrs.type = 'date';
+		}
+
 		if(!attrs.type) {
 			throw new Error("You must specify a type for this input.");
 		}
