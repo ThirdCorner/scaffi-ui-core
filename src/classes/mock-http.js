@@ -44,15 +44,25 @@ function filter(url, obj) {
         }
     }
 
+    var setFilter = function(filters, name, value) {
+        var reservedFilters = ['sorting', 'count', 'page'];
+        if(reservedFilters.indexOf(name) === -1) {
+            filters[name] = value;
+            return true;
+        }
+
+
+        return false;
+    };
+
     var parseFilters = (parseFilter) => {
         var foundFilter = false;
         var filters = {};
         _.each(parseFilter, function (filter, name) {
             if(_.isObject(filter)) {
                 var returnedFilters = parseFilters(filter);
-                if(returnedFilters) {
+                if(returnedFilters && setFilter(filters, name, returnedFilters)) {
                     foundFilter = true;
-                    filters[name] = returnedFilters;
                 }
             } else {
                 if (_.isString(filter) && filter.length == 0) {
@@ -60,8 +70,10 @@ function filter(url, obj) {
                 }
 
                 if (filter && filter != null && (filter.length > 0 || _.isNumber(filter))) {
-                    foundFilter = true;
-                    filters[name] = filter;
+
+                    if( setFilter(filters, name, filter)) {
+                        foundFilter = true;
+                    }
                 }
             }
         }, this);
@@ -75,9 +87,43 @@ function filter(url, obj) {
     /*
      FILTERING
      */
+    var shouldFilterRecord = function(record, filters) {
+        var foundRecord = true;
+        _.each(filters, function(name, value){
+            if(!_.has(record, name)) {
+                foundRecord = false;
+                return;
+            }
+            switch(true) {
+                case _.isNumber(value):
+                    if(record[name] != value) {
+                        foundRecord = false;
+                    }
+                    break;
+                case _.isString(value):
+                    if(!_.startsWith(record[name], value)){
+                        foundRecord = false;
+                    }
+                    break;
+                case _.isObject(value):
+                    console.log("Object nested filtering on prototype mode is not yet supported. Obviously this needs to be eventually.");
+                    foundRecord = false;
+                    break;
+
+                default:
+                    console.log("Not sure how to parse the following to filter it", name, value);
+                    foundRecord = false;
+            }
+        });
+
+        return foundRecord;
+    };
+
     if (params.filter && _.isObject(params.filter)) {
         var filters = parseFilters(params.filter);
-        obj = _.where(obj, filters);
+        obj = _.find(obj, function(record) {
+            return shouldFilterRecord(record, filters);
+        });
     }
     var totalCount = obj.length;
     /*
