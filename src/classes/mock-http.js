@@ -55,35 +55,39 @@ function filter(url, obj) {
         return false;
     };
 
-    var parseFilters = (parseFilter) => {
-        var foundFilter = false;
-        var filters = {};
-        _.each(parseFilter, function (filter, name) {
-            if(_.isObject(filter)) {
-                var returnedFilters = parseFilters(filter);
-                if(returnedFilters && setFilter(filters, name, returnedFilters)) {
-                    foundFilter = true;
-                }
-            } else {
-                if (_.isString(filter) && filter.length == 0) {
-                    filter = null;
-                }
-
-                if (filter && filter != null && (filter.length > 0 || _.isNumber(filter))) {
-
-                    if( setFilter(filters, name, filter)) {
-                        foundFilter = true;
-                    }
-                }
-            }
-        }, this);
-        if(!foundFilter) {
-            filters = null;
-        }
-
-        return filters;
-
-    };
+    /*
+        Don't need this because all filter columns are under a 'filter' obj property
+     */
+    // var parseFilters = (parseFilter) => {
+    //     var foundFilter = false;
+    //     var filters = {};
+    //     _.each(parseFilter, function (filter, name) {
+    //         if(_.isObject(filter)) {
+    //             var returnedFilters = parseFilters(filter);
+    //             if(returnedFilters) {
+    //                 filters[name] = returnedFilters;
+    //                 foundFilter = true;
+    //             }
+    //         } else {
+    //             if (_.isString(filter) && filter.length == 0) {
+    //                 filter = null;
+    //             }
+    //
+    //             if (filter && filter != null && (filter.length > 0 || _.isNumber(filter))) {
+    //
+    //                 filters[name] = filter;
+    //                 foundFilter = true;
+    //
+    //             }
+    //         }
+    //     }, this);
+    //     if(!foundFilter) {
+    //         filters = null;
+    //     }
+    //
+    //     return filters;
+    //
+    // };
     /*
      FILTERING
      */
@@ -120,7 +124,7 @@ function filter(url, obj) {
     };
 
     if (params.filter && _.isObject(params.filter)) {
-        var filters = parseFilters(params.filter);
+        var filters = params.filter;
         obj = _.find(obj, function(record) {
             return shouldFilterRecord(record, filters);
         });
