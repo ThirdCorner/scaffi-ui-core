@@ -23,6 +23,9 @@ class Input {
 	}
 	compile(element, attrs){
 
+		if(!attrs) {
+			attrs = {};
+		}
 		if(attrs.class && attrs.class.indexOf("md-datepicker-input") !== -1) {
 			attrs.type = 'date';
 		}
