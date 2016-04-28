@@ -93,11 +93,11 @@ function filter(url, obj) {
      */
     var shouldFilterRecord = function(record, filters) {
         var foundRecord = true;
-        _.each(filters, function(name, value){
+        _.each(filters, function(value, name){
             if(!_.has(record, name)) {
                 foundRecord = false;
                 return;
-            }
+            } 
             switch(true) {
                 case _.isNumber(value):
                     if(record[name] != value) {
