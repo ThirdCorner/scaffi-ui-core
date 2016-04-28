@@ -141,31 +141,16 @@ class AbstractService {
 
     getList(params) {
         var that = this;
-        if(params && params.parameters) {
-            var p = angular.copy(params);
-            /*
-                count: max display
-                sorting: {param: asc/desc
-                page: #
-                filter
-             */
-            p = p.parameters();
-            if(p.sorting) {
 
-                _.each(p.sorting, (direction, name)=>{
-                    p["sortProperty"] = name;
-                    p["sortDirection"] = direction;
-                });
+        var allowedParamNames = ["filter", "query", "offset", "count", "sorting"];
+        _.each(params, function(value, name){
+           if(allowedParamNames.indexOf(name) === -1) {
+               throw new Error("You're trying to pass an unknown param to getList: " + name +". Check the docs for what you're allowed to send via the front end.");
+           } 
+        });
 
-            }
-            if(p.filter) {
-                _.each(p.filter, (value, name)=>{
-                   p[name] = value;
-                }, this);
-            }
-            ParserHelper.convertToDateStrings(p);
-        }
-        return this.$http.get(API_BASE + `${this.route}`, {params: p}).then( (response)=> {
+        ParserHelper.convertToDateStrings(params);
+        return this.$http.get(API_BASE + `${this.route}`, {params: params}).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
