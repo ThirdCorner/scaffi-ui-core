@@ -128,6 +128,9 @@ function filter(url, obj) {
         obj = _.find(obj, function(record) {
             return shouldFilterRecord(record, filters);
         });
+        if(!_.isArray(obj)) {
+            obj = [];
+        }
     }
     var totalCount = obj.length;
     /*
