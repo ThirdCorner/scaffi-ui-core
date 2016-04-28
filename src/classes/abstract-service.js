@@ -154,7 +154,7 @@ class AbstractService {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
-                response.params = p;
+                response.params = params;
                 return response.data;
 
             }
