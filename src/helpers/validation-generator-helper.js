@@ -1,5 +1,6 @@
 "use strict";
 import _ from 'lodash';
+import ParserHelper from '../helpers/parser-helper';
 
 export default {
 	hasRestrictions(attrs, messages) {
@@ -43,10 +44,16 @@ export default {
 
 		return setRestrictions;
 	},
-	generateMessageDiv(elem, allowedRestrictions, attrs){
+	generateMessageDiv(scope, elem, allowedRestrictions, attrs){
+		var form = ParserHelper.getFormController(scope);
+		if(!form) {
+			console.log(scope);
+			throw new Error("Trying to generate validator messages, but can't find form for element");
+		}
+		var formName = form.$name;
 		var messages = this.getValidationMessage(allowedRestrictions, attrs);
 		var elemName = attrs["name"];
-		var returnMsg = `<div ng-messages="testForm.${elemName}.$error" multiple md-auto-hide="false" role="alert">`;
+		var returnMsg = `<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert">`;
 		_.each(messages, (msg, prop) =>{
 			returnMsg += `<div ng-message="${prop}">${msg}</div>`;
 		});

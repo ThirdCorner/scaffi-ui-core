@@ -63,7 +63,7 @@ class Input {
 					// 	throw new Error("Your input must be nested in an md-input-container.");
 					// }
 					
-					ValidationGeneratorHelper.generateMessageDiv(element, validationAttributes, attrs);
+					ValidationGeneratorHelper.generateMessageDiv(scope, element, validationAttributes, attrs);
 				}
 				
 			}

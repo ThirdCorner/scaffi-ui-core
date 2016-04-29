@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import ParserHelper from '../helpers/parser-helper';
 
 class AbstractStubPage {
 	constructor($scope) {
@@ -9,11 +10,7 @@ class AbstractStubPage {
 		}
 	}
 	_loadParentForm($scope){
-		_.each($scope.$parent, (value, name)=>{
-			if(_.endsWith(name, "Form")) {
-				$scope[name] = $scope.$parent[name];
-			}
-		}, this);
+		ParserHelper.setFormInChildScope($scope);
 	}
 }
 

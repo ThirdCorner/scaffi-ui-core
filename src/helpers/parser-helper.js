@@ -36,6 +36,28 @@ ParserHelper = {
         return false;
 
     },
+    isFormController(item, name) {
+        return (_.endsWith(name, "Form" && _.has(item, "$submitted"))); 
+    },
+    getFormController($scope) {
+        var form;
+        _.each($scope, (value, name)=>{
+            if(this.isFormController(value, name)) {
+                form = $scope[name];
+            }
+        }, this);
+
+        return form;
+    },
+    setFormInChildScope($scope){
+        if($scope && $scope.$parent) {
+            _.each($scope.$parent, (value, name)=> {
+                if (this.isFormController(value, name)) {
+                    $scope[name] = value;
+                }
+            }, this);
+        }
+    },
     convertToNumber(value) {
         if(ParserHelper.isNumberString(value)) {
             if(value.indexOf('.') !== -1) {
