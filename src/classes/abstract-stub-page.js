@@ -10,7 +10,7 @@ class AbstractStubPage {
 		}
 	}
 	_loadParentForm($scope){
-		ParserHelper.setFormInChildScope($scope);
+		ParserHelper.setFormInChildScope($scope, $scope.$parent);
 	}
 }
 

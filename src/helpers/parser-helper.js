@@ -46,17 +46,36 @@ ParserHelper = {
                 form = $scope[name];
             }
         }, this);
-
-        return form;
+        
+        if(form) {
+           return form; 
+        }
+        
+        if($scope.$parent) {
+            return this.getFormController($scope.$parent);
+        }
+        
+        return null;
     },
-    setFormInChildScope($scope){
-        if($scope && $scope.$parent) {
-            _.each($scope.$parent, (value, name)=> {
+    setFormInChildScope($scope, $parent){
+        if($scope && $parent) {
+            var setForm = false;
+            _.each($parent, (value, name)=> {
                 if (this.isFormController(value, name)) {
                     $scope[name] = value;
+                    setForm = true;
                 }
             }, this);
+            
+            if(setForm) {
+               return true; 
+            }
+            
+            if($parent.$parent) {
+                this.setFormInChildScope($scope, $parent.$parent);
+            }
         }
+        return false;
     },
     convertToNumber(value) {
         if(ParserHelper.isNumberString(value)) {
