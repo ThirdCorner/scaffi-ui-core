@@ -17,8 +17,7 @@ class Textarea {
 	 */
 	constructor($rootScope, $state){
 		this.restrict = 'E';
-		this.scope = {
-		};
+		this.scope = false;
 
 
 	}
@@ -34,10 +33,11 @@ class Textarea {
 		};
 
 		if(ValidationGeneratorHelper.hasRestrictions(attrs, validationAttributes)) {
+			// MD sppecific. Need to move elsewhere
 			// Check for name attr
-			if(element.parent()[0].tagName != 'MD-INPUT-CONTAINER') {
-				throw new Error("Your input must be nested in an md-input-container.");
-			}
+			// if(element.parent()[0].tagName != 'MD-INPUT-CONTAINER') {
+			// 	throw new Error("Your input must be nested in an md-input-container.");
+			// }
 
 			ValidationGeneratorHelper.generateMessageDiv(element, validationAttributes, attrs);
 		}

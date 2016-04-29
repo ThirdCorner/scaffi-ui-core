@@ -23,6 +23,9 @@ class Form {
 		if(attrs.name.indexOf("-") !== -1) {
 			throw new Error("Your form name cannot contain -. Use Camel Case.");
 		}
+		if(!_.endsWith(attrs.name, "Form")) {
+			throw new Error("Your form name must end in 'Form' otherwise nested scope validators won't attach properly. Something like 'editForm'")
+		}
 		/*
 		`   We don't want to enforce this is we're doing live edits
 		 */

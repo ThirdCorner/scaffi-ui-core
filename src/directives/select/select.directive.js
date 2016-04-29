@@ -20,16 +20,17 @@ class Select {
 	}
 
 	link(scope, element, attrs, ngModel){
-		var foundMdSelect = false;
-		_.each(element.parent().children(), (child) =>{
-			if(child.tagName == 'MD-SELECT') {
-				foundMdSelect = true;
-			}
-		});
-
-		if(!foundMdSelect || element.parent().tagName == 'MD-INPUT-CONTAINER') {
-			throw new Error("You must use 'md-select' for dropdowns, not 'select'.");
-		}
+		// MD Specific; needs to be moved elsewhere
+		// var foundMdSelect = false;
+		// _.each(element.parent().children(), (child) =>{
+		// 	if(child.tagName == 'MD-SELECT') {
+		// 		foundMdSelect = true;
+		// 	}
+		// });
+		//
+		// if(!foundMdSelect || element.parent().tagName == 'MD-INPUT-CONTAINER') {
+		// 	throw new Error("You must use 'md-select' for dropdowns, not 'select'.");
+		// }
 
 	}
 
