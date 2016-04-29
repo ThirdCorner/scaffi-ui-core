@@ -37,7 +37,7 @@ ParserHelper = {
 
     },
     isFormController(item, name) {
-        return (_.endsWith(name, "Form" && _.has(item, "$submitted"))); 
+        return (_.endsWith(name, "Form") && _.has(item, "$submitted")); 
     },
     getFormController($scope) {
         var form;
