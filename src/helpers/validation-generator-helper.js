@@ -73,8 +73,10 @@ var ValidationGeneratorHelper = {
 			
 			var messages = this.getValidationMessage(allowedRestrictions, attrs);
 			var html = "";
+			var containerValue = messageContainer.attr("ng-message");
 			_.each(messages, (msg, prop) => {
-				html += `<div ng-message="${prop}">${msg}</div>`;
+				var show = containerValue + "." + prop;
+				html += `<div ng-message="${prop}" ng-if="${show}">${msg}</div>`;
 			});
 			
 			messageContainer.html(html);
