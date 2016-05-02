@@ -63,6 +63,14 @@ ParserHelper = {
             _.each($parent, (value, name)=> {
                 if (this.isFormController(value, name)) {
                     $scope[name] = value;
+
+                    if(name !== "_form") {
+                        name = "_form";
+                        $parent[name] = value;
+                    }
+                    $scope[name] = value;
+
+
                     setForm = true;
                 }
             }, this);

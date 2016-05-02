@@ -46,7 +46,7 @@ export default {
 	},
 	generateMessageDiv(elem, allowedRestrictions, attrs){
 	
-		var formName = 'form';
+		var formName = '_form';
 		var messages = this.getValidationMessage(allowedRestrictions, attrs);
 		var elemName = attrs["name"];
 		var returnMsg = `<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert">`;

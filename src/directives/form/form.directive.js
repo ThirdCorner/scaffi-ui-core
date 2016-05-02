@@ -25,7 +25,7 @@ class Form {
 		}
 		
 		if(attrs.name != "form") {
-			angular.element(element).attr("name", "form");
+			angular.element(element).attr("name", "_form");
 
 			/*
 				The reason we're doing this is because, if you have form elements in an isolated scope,
