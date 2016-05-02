@@ -23,23 +23,26 @@ class MdSelect {
 
 	compile(element, attrs){
 		
-		var validationAttributes = {
-			required: 'This field cannot be left empty.'
-		};
-		
-		if(ValidationGeneratorHelper.hasRestrictions(attrs, validationAttributes)) {
-			// Check for name attr
-			if(element.parent()[0].tagName != 'MD-INPUT-CONTAINER') {
-				throw new Error("Your input must be nested in an md-input-container.");
-			}
-			
-			ValidationGeneratorHelper.generateMessageDiv(element, validationAttributes, attrs);
+		if(element.parent()[0].tagName != 'MD-INPUT-CONTAINER') {
+			throw new Error("Your input must be nested in an md-input-container.");
 		}
+		
+		var messageContainer = null;
+		if(attrs.name) {
+			messageContainer = ValidationGeneratorHelper.generateMessageContainer(element, attrs.name, attrs);
+		}
+		
+	
 		
 		return {
 			pre: (scope, element, attrs, ngModel)=>{
 				
-
+				var validationAttributes = {
+					required: 'This field cannot be left empty.'
+				};
+				
+				
+				ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
 			}
 		}
 	}

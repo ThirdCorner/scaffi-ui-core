@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import ParserHelper from '../helpers/parser-helper';
 
-export default {
+var ValidationGeneratorHelper = {
 	hasRestrictions(attrs, messages) {
 		var hasValidation = false;
 		_.each(messages, (msg, key)=>{
@@ -44,20 +44,39 @@ export default {
 
 		return setRestrictions;
 	},
-	generateMessageDiv(elem, allowedRestrictions, attrs){
-	
+	generateMessageContainer(elem, name, attrs){
 		var formName = '_form';
-		var messages = this.getValidationMessage(allowedRestrictions, attrs);
-		var elemName = attrs["name"];
-		var returnMsg = `<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert">`;
-		_.each(messages, (msg, prop) =>{
-			returnMsg += `<div ng-message="${prop}">${msg}</div>`;
-		});
-		returnMsg += "</div>";
+		var elemName = name;
+		var div = `<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert"></div>`;
+		elem.after(div);
+		
+		return div;
+	},
+	generateMessageDiv(element, messageContainer, allowedRestrictions, attrs){
 
-		elem.after(returnMsg);
+		var scope = angular.element(element).scope();
+		if(attrs.ngRequired && scope && scope.$parent.$eval(attrs.ngRequired) === true) {
+			attrs.required = true;
+		}
+
+		if(attrs.required) {
+			attrs.required = true;
+		}
+		
+		if(ValidationGeneratorHelper.hasRestrictions(attrs, allowedRestrictions) && messageContainer) {
+			
+			var messages = this.getValidationMessage(allowedRestrictions, attrs);
+			var html = "";
+			_.each(messages, (msg, prop) => {
+				html += `<div ng-message="${prop}">${msg}</div>`;
+			});
+			
+			messageContainer.html(html);
+		}
 
 		return true;
 
 	}
 };
+
+export default ValidationGeneratorHelper;
