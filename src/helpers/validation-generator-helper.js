@@ -45,7 +45,7 @@ export default {
 		return setRestrictions;
 	},
 	generateMessageDiv(scope, elem, allowedRestrictions, attrs){
-		var form = ParserHelper.getFormController(angular.element(elem).scope());
+		var form = ParserHelper.getFormController(scope);
 		if(!form) {
 			console.log(scope);
 			throw new Error("Trying to generate validator messages, but can't find form for element");
