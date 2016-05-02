@@ -47,7 +47,7 @@ var ValidationGeneratorHelper = {
 	generateMessageContainer(elem, name, attrs){
 		var formName = '_form';
 		var elemName = name;
-		var div = `<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert"></div>`;
+		var div = angular.element(`<div ng-messages="${formName}.${elemName}.$error" multiple md-auto-hide="false" role="alert"></div>`);
 		elem.after(div);
 		
 		return div;
@@ -56,7 +56,7 @@ var ValidationGeneratorHelper = {
 
 		var scope = angular.element(element).scope();
 		if(attrs.ngRequired && scope && scope.$parent.$eval(attrs.ngRequired) === true) {
-			attrs.required = true;
+			attrs.required = true;   
 		}
 
 		if(attrs.required) {
