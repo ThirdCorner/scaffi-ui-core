@@ -82,7 +82,7 @@ var ValidationGeneratorHelper = {
 			_.each(messages, (msg, prop) => {
 				var elemName = containerValue.replace(".$error", "");
 
-				var ngif = elemName + "$touched||_form.$submitted";
+				var ngif = elemName + ".$touched||_form.$submitted";
 
 				html += `<div ng-message="${prop}"><span ng-if="${ngif}">${msg}</span></div>`;
 			});
