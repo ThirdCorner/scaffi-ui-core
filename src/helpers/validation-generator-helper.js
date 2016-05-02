@@ -80,8 +80,11 @@ var ValidationGeneratorHelper = {
 			var html = "";
 			var containerValue = messageContainer.attr("ng-messages");
 			_.each(messages, (msg, prop) => {
-				var show = containerValue + "." + prop;
-				html += `<div ng-message="${prop}">${msg}</div>`;  
+				var elemName = containerValue.replace(".$error", "");
+
+				var ngif = elemName + "$touched||_form.$submitted";
+
+				html += `<div ng-message="${prop}"><span ng-if="${ngif}">${msg}</span></div>`;
 			});
 			
 			messageContainer.html(html);
