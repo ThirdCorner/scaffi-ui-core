@@ -32,17 +32,22 @@ class MdSelect {
 			messageContainer = ValidationGeneratorHelper.generateMessageContainer(element, attrs.name, attrs);
 		}
 		
+		
+		var validationAttributes = {
+			required: 'This field cannot be left empty.'
+		};
+		
+		/*
+		 Because of ngMessages happening in the compile, if you try to add the messages in the pre link,
+		 ngMessage directive WILL NOT pick them up.
+		 */
+		ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
 	
 		
 		return {
 			pre: (scope, element, attrs, ngModel)=>{
 				
-				var validationAttributes = {
-					required: 'This field cannot be left empty.'
-				};
 				
-				
-				ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
 			}
 		}
 	}

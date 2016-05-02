@@ -29,19 +29,25 @@ class Textarea {
 		if(attrs.name) {
 			messageContainer = ValidationGeneratorHelper.generateMessageContainer(element, attrs.name, attrs);
 		}
+
+		var validationAttributes = {
+			required: 'This field cannot be left empty.',
+			minlength: 'This field must be at least {minlength} characters long.',
+			maxlength: 'This field cannot be more than {maxlength} characters long.',
+			ngPattern: null
+
+		};
+
+		/*
+		 Because of ngMessages happening in the compile, if you try to add the messages in the pre link,
+		 ngMessage directive WILL NOT pick them up.
+		 */
+		ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
 		
 		
 		return {
 			pre: (scope, element, attrs, ngModel)=>{
-				var validationAttributes = {
-					required: 'This field cannot be left empty.',
-					minlength: 'This field must be at least {minlength} characters long.',
-					maxlength: 'This field cannot be more than {maxlength} characters long.',
-					ngPattern: null
-					
-				};
-				
-				ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
+
 			}
 		}
 	}

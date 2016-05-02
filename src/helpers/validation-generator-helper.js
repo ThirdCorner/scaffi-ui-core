@@ -58,6 +58,11 @@ var ValidationGeneratorHelper = {
 		
 		return div;
 	},
+	
+	/*
+	 Because of ngMessages happening in the compile, if you try to add the messages in the pre link,
+	 ngMessage directive WILL NOT pick them up.
+	 */
 	generateMessageDiv(element, messageContainer, allowedRestrictions, attrs){
 
 		var scope = angular.element(element).scope();
