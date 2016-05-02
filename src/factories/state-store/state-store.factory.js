@@ -2,7 +2,7 @@
 
 import {Factory} from '../../ng-decorators'; // jshint unused: false
 import _ from 'lodash';
-import {StateModel} from '../../index.js';
+import StateModel from '../../classes/state-model';
 
 //start-non-standard
 @Factory({

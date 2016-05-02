@@ -1,7 +1,7 @@
 'use strict';
 
 import {Factory} from '../../ng-decorators'; // jshint unused: false
-import {ParserHelper} from '../../index.js';
+import ParserHelper from '../../helpers/parser-helper';
 /*
 TODO need to add a live edit config to scaffi-ui
  */
