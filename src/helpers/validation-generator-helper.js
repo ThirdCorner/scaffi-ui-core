@@ -45,6 +45,13 @@ var ValidationGeneratorHelper = {
 		return setRestrictions;
 	},
 	generateMessageContainer(elem, name, attrs){
+		/*
+			We can't eval this because there is no scope during compile, so we have to pass through and deal with it on the directive side.
+			Mainly, this for md-autocomplete
+		 */
+		if(_.startsWith(attrs.name, "{{")){
+			return null;
+		}
 		var messageName = "_form." + name + ".$error";
 		var div = angular.element(`<div ng-messages="${messageName}" multiple md-auto-hide="false" role="alert"></div>`);
 		elem.after(div);
