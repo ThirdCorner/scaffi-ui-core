@@ -25,7 +25,8 @@ class Form {
 		}
 		
 		if(attrs.name != "form") {
-			attrs.name = "form";
+			angular.element(element).attr("name", "form");
+
 			/*
 				The reason we're doing this is because, if you have form elements in an isolated scope,
 				there's no way to access the form name in the compile function because it's not generated yet.
