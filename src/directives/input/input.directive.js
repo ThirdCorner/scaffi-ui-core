@@ -35,7 +35,8 @@ class Input {
 			throw new Error("You must specify a type for this input.");
 		}
 		
-		if(attrs.ngRequired && scope.$parent.$eval(attrs.ngRequired) === true) {
+		var scope = angular.element(element).scope();
+		if(attrs.ngRequired && scope && scope.$parent.$eval(attrs.ngRequired) === true) {
 			attrs.required = true;
 		}
 		
