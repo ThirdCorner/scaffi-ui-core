@@ -153,7 +153,9 @@ class DataCollection extends Array {
 			this._filterEvent = filterEvent;
 		}
 		
-		this.filtered = _.filter(this, this._filterEvent);	
+		if(this._filterEvent) {
+			this.filtered = _.filter(this, this._filterEvent);
+		} 
 	}
 	push(data) {
 		if(!_.isObject(data)){
