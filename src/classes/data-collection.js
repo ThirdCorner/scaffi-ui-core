@@ -157,6 +157,12 @@ class DataCollection extends Array {
 			this.filtered = _.filter(this, this._filterEvent);
 		} 
 	}
+	getServerTotal(){
+		return this._inlineCount;
+	}
+	setServerTotal(count){
+		this._inlineCount = count;
+	}
 	push(data) {
 		if(!_.isObject(data)){
 			data = {};

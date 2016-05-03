@@ -18,9 +18,21 @@ class StateModel {
 		if(!data) {
 			return null;
 		}
-
+		
+		var inlineCount = null;
+		/*
+			THis means it's a LIST pull
+		 */
+		if(_.has(data, 'inlineCount')) {
+			inlineCount = data.inlineCount;
+			data = data.results || [];
+		}
+		
 		if(_.isArray(data)){
 			this.data = new DataCollection(this.service, data, this);
+			if(inlineCount) {
+				this.data.setServerTotal(inlineCount);
+			}
 			
 		} else {
 			this.data = new DataModel(this.service, data, this);
