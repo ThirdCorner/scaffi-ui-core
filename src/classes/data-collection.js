@@ -11,7 +11,17 @@ class DataCollection extends Array {
 		fireUpdateParent fn that tells first node parent to refresh its data
 	 */
 	constructor(Service, data, stateModel){
+
+		super();
 		
+		this.initialize();
+		
+		
+	}
+	/*
+		Moved to initialize because babel compile was messing with the this pointers
+	 */
+	initialize(Service, data, stateModel){
 		ID_PROP = ScaffiCore.config.getIdPropertyName();
 		
 		var inlineCount = 0;
@@ -23,34 +33,32 @@ class DataCollection extends Array {
 				data = data.results;
 			}
 		}
-
+		
 		if(!_.isArray(data)) {
 			data = [];
 		}
-
-		super();
-
+		
 		this._service = Service;
 		this._stateModel = stateModel;
-
+		
 		if(!stateModel) {
 			throw new Error("Rest Collection doesn't have state model")
 		}
 		this._setSocketConnection();
 		
 		this._inlineCount = inlineCount;
-
+		
 		_.each(data, (value) =>{
 			this.push(value);
 		}, this);
-
+		
 		var that = this;
 		this._events = new EventListener({
 			bubble:()=>{
 				that._events.bubble.apply(that._events, arguments);
 			},
 			hasStatus:(search)=>{
-
+				
 			},
 			get:(prop)=>{
 				if(_.has(that, prop) && that[prop]) {
@@ -58,14 +66,13 @@ class DataCollection extends Array {
 				}
 			},
 			set:(prop, value)=>{
-
+				
 			}
 		});
-
-
-
-		this._parentLink = null;
 		
+		
+		
+		this._parentLink = null;
 	}
 	onCustom(event, fn){
 		this._events.on(event, fn);
