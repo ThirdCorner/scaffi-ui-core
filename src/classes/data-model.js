@@ -221,7 +221,7 @@ class DataModel {
 	}
 	save(){
 		var that = this;
-		this._service.submit(this.export()).then(data=>{
+		this._service.save(this.export()).then(data=>{
 			if(data[ID_PROP]) {
 				that.setId(data[ID_PROP]);
 				that._events.trigger("create", {[ID_PROP]: data[ID_PROP]})
@@ -232,7 +232,7 @@ class DataModel {
 		var sendStructure = {};
 		sendStructure[ID_PROP] = this[ID_PROP];
 		sendStructure[name] = this[name];
-		this._service.submit(sendStructure);
+		this._service.save(sendStructure);
 		//console.log("CHANGING " , name, ": ", this[name]);
 	}
 	delete(){

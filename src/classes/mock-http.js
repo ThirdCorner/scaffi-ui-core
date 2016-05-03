@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import ScaffiCore from '../index';
+import moment from 'moment';
 var ID_PROP;
 
 import ParserHelper from '../helpers/parser-helper';
@@ -294,7 +295,11 @@ class MockHttp {
 
                 try {
                     data = addId(JSON.parse(data));
+
+                    data.CreatedOn = moment().format();
+                    data.ModifiedOn = moment().format();
                 } catch(e){}
+
 
                 if(overrides.POST) {
 
@@ -317,6 +322,7 @@ class MockHttp {
             .respond( (method, url, data, headers) => {
                 try {
                     data = addId(JSON.parse(data));
+                    data.ModifiedOn = moment().format();
                 } catch(e){}
                 if(overrides.PUT) {
 

@@ -31,10 +31,7 @@ class AbstractService {
     getPropertyName(){
         throw new Error(`This service needs a function that returns the property name that can be found in a json structure`);
     }
-    
-    getNamespace(){
-        return this.namespace;
-    }
+
     getService(name) {
         if(!_.endsWith(name, "Service")) {
             name = name + "Service";
@@ -44,26 +41,9 @@ class AbstractService {
         }
         return null;
     }
-  
-    //
-    // /*
-    //     For making a LIST request without going in a table
-    //  */
-    // fetchList() {
-    //     var that = this;
-    //     return this.$http.get(API_BASE + `${this.route}`).then( (response)=> {
-    //         console.log(that.route);
-    //         that.sendToTestUIHarnessResponse(response);
-    //         if(that.isSuccess(response)) {
-    //             return response.data;
-    //         }
-    //         return that.$rootScope.showResourceError(response);
-    //     }).catch((response) => {
-    //         that.sendToTestUIHarnessResponse(response);
-    //         return that.$rootScope.showResourceError(response);
-    //     });
-    // }
-
+    getBaseUrl(){
+        return API_BASE + `${this.route}`;
+    }
     call(url){
         var that = this;
         return this.$http.get(url).then((response)=>{
@@ -83,7 +63,7 @@ class AbstractService {
      */
     resource(id) {
         var that = this;
-        var url =  API_BASE + `${this.route}`;
+        var url =  this.getBaseUrl();
         if(id) {
             url += `/${id}`;
         }
@@ -108,7 +88,7 @@ class AbstractService {
     }
     get(id) {
         var that = this;
-        var url =  API_BASE + `${this.route}`;
+        var url =  this.getBaseUrl();
         if(id) {
             url += `/${id}`;
         }
@@ -174,21 +154,19 @@ class AbstractService {
     }
 
     // This will POST or PUT depending if there's an Id
-    submit(resource) {
+    save(resource) {
         if(_.has(resource, ID_PROP)) {
             return this.update(resource);
         } else {
-            return this.create(resource);
+            return this.post(resource);
         }
 
     }
-    create(newResource, opts) {
+    post(newResource, opts) {
 
         var that = this;
         newResource = angular.copy(newResource);
         ParserHelper.convertToDB(newResource);
-        newResource.CreatedOn = moment().format();
-        newResource.ModifiedOn = moment().format();
 
         return this.$http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
 
@@ -206,22 +184,11 @@ class AbstractService {
             return that.$rootScope.showServerError(response);
         });
     }
-
-	_getCreatedToastMessage(response) {
-		var msg = "Record successfully created!";
-		if(_.isObject(response) && _.has(response, ID_PROP)) {
-			msg = `Record ${response[ID_PROP]} successfully created!`;
-		} else if(_.isNumber(response)) {
-			msg = `Record ${response} successfully created!`;
-		}
-
-		return msg;
-	}
-    update(updatedResource, opts) {
+    
+    put(updatedResource, opts) {
         var that = this;
         updatedResource = angular.copy(updatedResource);
         ParserHelper.convertToDB(updatedResource);
-        updatedResource.ModifiedOn = moment().format();
 
         return this.$http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
@@ -261,6 +228,17 @@ class AbstractService {
    
     isSuccess(response) {
         return response && response.status > 199 && response.status < 300;
+    }
+    
+    _getCreatedToastMessage(response) {
+        var msg = "Record successfully created!";
+        if(_.isObject(response) && _.has(response, ID_PROP)) {
+            msg = `Record ${response[ID_PROP]} successfully created!`;
+        } else if(_.isNumber(response)) {
+            msg = `Record ${response} successfully created!`;
+        }
+        
+        return msg;
     }
 
     /*
