@@ -244,6 +244,9 @@ class DataModel {
 	getNamespace() {
 		return this._namespace;
 	}
+	filter() {
+		throw new Error("There's no use case to filter items on a DataModel. Did you expect this to be a DataCollection? Check your code, boyo.");
+	}
 	export(data){
 
 		var returnObj = {};

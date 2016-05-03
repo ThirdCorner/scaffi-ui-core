@@ -148,6 +148,13 @@ class DataCollection extends Array {
 	_setParentLinkFunction(fn){
 		this._parentLink = fn;
 	}
+	filter(filterEvent) {
+		if(filterEvent) {
+			this._filterEvent = filterEvent;
+		}
+		
+		this.filtered = _.filter(this, this._filterEvent);	
+	}
 	push(data) {
 		if(!_.isObject(data)){
 			data = {};
