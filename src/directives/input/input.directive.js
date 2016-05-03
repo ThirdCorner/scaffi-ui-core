@@ -30,11 +30,7 @@ class Input {
 		if(attrs.class && attrs.class.indexOf("md-datepicker-input") !== -1) {
 			attrs.type = 'date';
 		}
-		
-		if(!attrs.type) {
-			throw new Error("You must specify a type for this input.");
-		}
-		
+				
 		var messageContainer = null;
 		if(attrs.name) {
 			messageContainer = ValidationGeneratorHelper.generateMessageContainer(element, attrs.name, attrs);
