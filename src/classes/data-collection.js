@@ -20,7 +20,7 @@ class DataCollection {
 		}, this);
 
 		
-		this.initialize();
+		this.initialize(Service, data, stateModel);   
 		
 		
 	}
