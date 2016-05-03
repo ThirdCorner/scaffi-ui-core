@@ -6,13 +6,19 @@ import ScaffiCore from '../index';
 var ID_PROP;
 import _ from 'lodash';
 
-class DataCollection extends Array {
+
+
+class DataCollection {
 	/*
 		fireUpdateParent fn that tells first node parent to refresh its data
 	 */
 	constructor(Service, data, stateModel){
+		_.each(Array.prototype, (value, key)=>{
+			if(Array.prototype.hasOwnProperty(key)) {
+				this[key] = value;
+			}
+		}, this);
 
-		super();
 		
 		this.initialize();
 		
