@@ -106,7 +106,7 @@ function filter(url, obj) {
                     }
                     break;
                 case _.isString(value):
-                    if(!_.startsWith(record[name], value)){
+                    if(!_.startsWith(record[name], value)){   
                         foundRecord = false;
                     }
                     break;
@@ -125,7 +125,10 @@ function filter(url, obj) {
     };
 
     if (params.filter && _.isObject(params.filter)) {
-        var filters = params.filter;
+        var filters = _.filter(params.filter, (value)=>{
+            return value !== null;
+        });
+        
         obj = _.filter(obj, function(record) {
             return shouldFilterRecord(record, filters);
         });
