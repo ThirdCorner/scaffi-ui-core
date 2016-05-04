@@ -38,16 +38,21 @@ class Form {
 		
 		element.attr("novalidate", true);
 		
-		element.bind("submit", function(e){
-			e.preventDefault();
-			
-			if(scope[attrs.name].$valid) {
-				scope.$eval(attrs.onSubmit);
-				return true;
+		
+		return {
+			pre: function(scope, element, attrs, ngModel) {
+				element.bind("submit", function(e){
+					e.preventDefault();
+					
+					if(scope[attrs.name].$valid) {
+						scope.$eval(attrs.onSubmit);
+						return true;
+					}
+					
+					return false;
+				});
 			}
-			
-			return false;
-		});
+		}
 	}
 	// link(scope, element, attrs, ngModel){
 	//
