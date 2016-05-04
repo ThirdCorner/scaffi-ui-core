@@ -30,10 +30,10 @@ class DataCollection {
 	initialize(Service, data, stateModel){
 		ID_PROP = ScaffiCore.config.getIdPropertyName();
 		
-		var inlineCount = 0;
+		this.setServerTotal(0);
 		if(data) {
 			if(_.has(data, "inlineCount")) {
-				inlineCount = data.inlineCount;
+				this.setServerTotal(data.inlineCount);
 			}
 			if(_.has(data, "results")) {
 				data = data.results;
@@ -51,8 +51,6 @@ class DataCollection {
 			throw new Error("Rest Collection doesn't have state model")
 		}
 		this._setSocketConnection();
-		
-		this._inlineCount = inlineCount;
 		
 		_.each(data, (value) =>{
 			this.push(value);
@@ -75,8 +73,6 @@ class DataCollection {
 				
 			}
 		});
-		
-		
 		
 		this._parentLink = null;
 	}
@@ -175,6 +171,9 @@ class DataCollection {
 	}
 	setServerTotal(count){
 		this._inlineCount = count;
+		if(this._inlineCount == 0) {
+			this.length = 0;
+		}
 	}
 	push(data) {
 		if(!_.isObject(data)){
