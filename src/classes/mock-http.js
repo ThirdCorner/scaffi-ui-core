@@ -125,8 +125,11 @@ function filter(url, obj) {
     };
 
     if (params.filter && _.isObject(params.filter)) {
-        var filters = _.filter(params.filter, (value)=>{
-            return value !== null;
+        var filters = {};
+        _.each(params.filter, (value, name)=>{
+            if(value !== null) {
+                filters[name] = value;
+            }
         });
         
         obj = _.filter(obj, function(record) {
