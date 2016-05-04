@@ -119,7 +119,7 @@ class AbstractService {
         });
     }
 
-    getList(params) {
+    list(params) {
         var that = this;
 
         var allowedParamNames = ["filter", "query", "offset", "count", "sorting"];
@@ -130,12 +130,13 @@ class AbstractService {
         });
 
         ParserHelper.convertToDateStrings(params);
-        return this.$http.get(API_BASE + `${this.route}`, {params: params}).then( (response)=> {
+        var url = this.getBaseUrl();
+        return this.$http.get(url, {params: params}).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccess(response)) {
                 ParserHelper.convertToApp(response.data);
                 response.params = params;
-                return response.data;
+                return this.stateStore.registerRequest(this, url, response.data);
 
             }
             that.$rootScope.showResourceError(response);
@@ -145,7 +146,7 @@ class AbstractService {
                 results: []
 
             };
-            return data;
+            return this.stateStore.registerRequest(this, url, data);
 
         }).catch((response)=>{
             that.sendToTestUIHarnessResponse(response);
