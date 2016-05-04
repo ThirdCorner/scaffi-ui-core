@@ -126,7 +126,15 @@ class AbstractService {
         _.each(params, function(value, name){
            if(allowedParamNames.indexOf(name) === -1) {
                throw new Error("You're trying to pass an unknown param to getList: " + name +". Check the docs for what you're allowed to send via the front end.");
-           } 
+           }
+            /*
+                Need to get rid of any filter values that are set as null because that messes up things
+             */
+           if(name == "filter") {
+               params.filter = _.filter(value, (value)=>{
+                  return value !== null;
+               });
+           }
         });
 
         ParserHelper.convertToDateStrings(params);
