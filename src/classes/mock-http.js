@@ -41,7 +41,7 @@ function filter(url, obj) {
         });
 
         if (col.length) {
-            obj = _.sortByOrder(obj, col, order);
+            obj = _.orderBy(obj, col, order);  
         }
     }
 
