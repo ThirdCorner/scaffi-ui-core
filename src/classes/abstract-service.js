@@ -3,6 +3,7 @@
 import moment from 'moment';
 import _ from 'lodash';
 import ParserHelper from '../helpers/parser-helper';
+import DataModel from '../classes/data-model';
 
 import ScaffiCore from '../index.js';
 import {Inject} from '../ng-decorators';
@@ -197,9 +198,7 @@ class AbstractService {
 
     // This will POST or PUT depending if there's an Id
     save(resource) {
-        if(_.has(resource, "_export")) {
-            resource = resource._export();
-        }
+       
         if(_.has(resource, ID_PROP)) {
             return this.put(resource);
         } else {
@@ -209,6 +208,9 @@ class AbstractService {
     }
     post(newResource, opts) {
 
+        if(newResource instanceof DataModel) {
+            newResource = newResource.export();
+        }
         var that = this;
         newResource = angular.copy(newResource);
         ParserHelper.convertToDB(newResource);
@@ -232,6 +234,11 @@ class AbstractService {
     
     put(updatedResource, opts) {
         var that = this;
+    
+        if(updatedResource instanceof DataModel) {
+            updatedResource = updatedResource.export();
+        }
+        
         updatedResource = angular.copy(updatedResource);
         ParserHelper.convertToDB(updatedResource);
 
