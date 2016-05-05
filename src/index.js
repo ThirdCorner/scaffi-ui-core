@@ -16,7 +16,7 @@ import _ from 'lodash';
 import mainModule from './ng-decorators';
 import ValidationGeneratorHelper from './helpers/validation-generator-helper';
 import DataModel from './classes/data-model';
-import DataCollection from './classes/data-collection';
+var DataCollection = require('./classes/data-collection');
 import EnvironmentHelper from './helpers/environment-helper';
 import ParserHelper from './helpers/parser-helper';
 import StateModel from './classes/state-model';

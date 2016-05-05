@@ -4,7 +4,7 @@ import _ from 'lodash';
 import ScaffiCore from '../index';
 var ID_PROP;
 
-import DataCollection from './data-collection';
+var DataCollection = require('./data-collection');
 import EventListener from './event-listener';
 
 
@@ -110,7 +110,8 @@ class DataModel {
 			var childService = this._service.getService(key);
 			if(childService) {
 				var that = this;
-				value = new DataCollection(childService, value, this._stateModel);
+				value = new DataCollection();
+				value.init(childService, value, this._stateModel);
 				this._stateModel.setBaseLevel(this._service.getPropertyName() + "#" + this[ID_PROP]);
 				value._setParentLinkFunction((model)=>{
 					model[that._namespace + "Id"] = that[ID_PROP];

@@ -1,7 +1,7 @@
 'use strict';
 
 
-import DataCollection from './data-collection';
+var DataCollection = require('./data-collection');
 import DataModel from './data-model';
 
 import _ from 'lodash';
@@ -29,7 +29,8 @@ class StateModel {
 		}
 		
 		if(_.isArray(data)){
-			this.data = new DataCollection(this.service, data, this);
+			this.data = new DataCollection();
+			this.data.init(this.service, data, this);
 			if(inlineCount) {
 				this.data.setServerTotal(inlineCount);
 			}
