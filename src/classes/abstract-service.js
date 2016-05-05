@@ -123,6 +123,10 @@ class AbstractService {
         var that = this;
 
         var allowedParamNames = ["filter", "query", "offset", "count", "sorting"];
+        /*
+            Break any reference with UI
+         */
+        params = angular.copy(params);
         _.each(params, function(value, name){
            if(allowedParamNames.indexOf(name) === -1) {
                throw new Error("You're trying to pass an unknown param to getList: " + name +". Check the docs for what you're allowed to send via the front end.");
