@@ -122,11 +122,15 @@ class AbstractService {
     list(params) {
         var that = this;
 
-        var allowedParamNames = ["filter", "query", "offset", "count", "sorting"];
+        var allowedParamNames = ["filter", "query", "offset", "count", "sorting", "page", "limit"];
+
+
         /*
             Break any reference with UI
          */
+
         params = angular.copy(params);
+
         _.each(params, function(value, name){
            if(allowedParamNames.indexOf(name) === -1) {
                throw new Error("You're trying to pass an unknown param to getList: " + name +". Check the docs for what you're allowed to send via the front end.");
@@ -143,8 +147,29 @@ class AbstractService {
                });
                params.filter = filters;
            }
+
+
         });
 
+        if(_.has(params, "limit")) {
+            params.count = params.limit;
+        }
+
+        if(_.has(params, "page")) {
+            if(!_.has(params, "count") && !_.has(params, "limit")) {
+                throw new Error("You're trying to filter by page but haven't declared a limit or count");
+            }
+            
+            var page = ParserHelper.convertToNumber(params.page);
+            if(page === 0) {
+                page = 1;
+            }
+            
+            params.offset = (page * params.count) - params.count;
+            
+            
+        }
+        
         ParserHelper.convertToDateStrings(params);
         var url = this.getBaseUrl();
         return this.$http.get(url, {params: params}).then( (response)=> {
