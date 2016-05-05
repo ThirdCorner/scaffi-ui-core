@@ -197,6 +197,9 @@ class AbstractService {
 
     // This will POST or PUT depending if there's an Id
     save(resource) {
+        if(_.has(resource, "_export")) {
+            resource = resource._export();
+        }
         if(_.has(resource, ID_PROP)) {
             return this.put(resource);
         } else {
