@@ -99,14 +99,17 @@ class DataModel {
 			 */
 			this[key] = value = this.convertToDataCollection(key, value);
 
-			if(value instanceof DataCollection && _.has(data, key)){
+			if(this._isDataCollection(value) && _.has(data, key)){
 				value.updateData(event, data[key]);
 			}
 		}, this);
 		
 	}
+	_isDataCollection(value) {
+		return _.isArray(value) && _.has(value, "_inlineCount")
+	}
 	convertToDataCollection(key, value) {
-		if(_.isArray(value) && !(value instanceof DataCollection)) {
+		if(_.isArray(value) && !this._isDataCollection(value)) {
 			var childService = this._service.getService(key);
 			if(childService) {
 				var that = this;
