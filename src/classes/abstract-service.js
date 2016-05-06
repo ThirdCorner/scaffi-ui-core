@@ -208,9 +208,8 @@ class AbstractService {
     }
     post(newResource, opts) {
 
-        if(newResource instanceof DataModel) {
-            newResource = newResource.export();
-        }
+        newResource = this.convertToObject(newResource);
+        
         var that = this;
         newResource = angular.copy(newResource);
         ParserHelper.convertToDB(newResource);
@@ -234,10 +233,8 @@ class AbstractService {
     
     put(updatedResource, opts) {
         var that = this;
-    
-        if(updatedResource instanceof DataModel) {
-            updatedResource = updatedResource.export();
-        }
+
+        updatedResource = this.convertToObject(updatedResource);
         
         updatedResource = angular.copy(updatedResource);
         ParserHelper.convertToDB(updatedResource);
@@ -276,6 +273,39 @@ class AbstractService {
         if(_.has(this.$rootScope, "addTestUIHarnessResponse") && _.isFunction(this.$rootScope["addTestUIHarnessResponse"])) {
             this.$rootScope["addTestUIHarnessResponse"](response);
         }
+    }
+    convertToObject(data) {
+        var returnObj = {};
+        var parseData = data;
+
+        _.each(parseData, (value,key) =>{
+            if(_.isFunction(value)) {
+                return;
+            }
+            switch(true) {
+                // //case value instanceof DataCollection:
+                //     //returnObj[key] = value._export();
+                //     break;
+                case value instanceof DataModel:
+                    returnObj[key] = value.export();
+                    break;
+                case _.isArray(value):
+                    var returnArray = [];
+                    _.each(value, (item)=>{
+                    	returnArray.push(this.convertToObject(item));
+                    }, this);
+                    returnObj[key] = returnArray;
+                    break;
+                default:
+                    if(key.indexOf("_") !== 0) {
+                        returnObj[key] = value;
+                    }
+
+            }
+
+        }, this);
+
+        return returnObj;
     }
    
     isSuccess(response) {
