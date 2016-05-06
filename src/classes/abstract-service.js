@@ -278,6 +278,9 @@ class AbstractService {
         var returnObj = {};
         var parseData = data;
 
+        if(!_.isArray(data) && !_.isObject(data)) {
+            return data;
+        }
         _.each(parseData, (value,key) =>{
             if(_.isFunction(value)) {
                 return;
