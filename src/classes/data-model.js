@@ -225,7 +225,7 @@ class DataModel {
 	}
 	save(){
 		var that = this;
-		this._service.save(this.export()).then(data=>{
+		return this._service.save(this.export()).then(data=>{
 			if(data[ID_PROP]) {
 				that.setId(data[ID_PROP]);
 				that._events.trigger("create", {[ID_PROP]: data[ID_PROP]})
@@ -236,12 +236,12 @@ class DataModel {
 		var sendStructure = {};
 		sendStructure[ID_PROP] = this[ID_PROP];
 		sendStructure[name] = this[name];
-		this._service.save(sendStructure);
+		return this._service.save(sendStructure);
 		//console.log("CHANGING " , name, ": ", this[name]);
 	}
 	delete(){
 		if(this[ID_PROP]) {
-			this._service.delete(this[ID_PROP]);
+			return this._service.delete(this[ID_PROP]);
 		}
 		this._events.trigger("delete")
 	}
