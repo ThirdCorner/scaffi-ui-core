@@ -93,7 +93,7 @@ function filter(url, obj) {
      FILTERING
      */
     var shouldFilterRecord = function(record, filters) {
-        var foundRecord = false;
+        var foundRecord = true;
         _.each(filters, function(value, name){
             if(!_.has(record, name)) {
                 foundRecord = false;
@@ -102,16 +102,17 @@ function filter(url, obj) {
             if(!_.isArray(value)) {
                 value = [value];
             }
+            var foundInFilter = false;
             _.each(value, (itemValue)=>{
                 switch(true) {
                     case _.isNumber(itemValue):
                         if(ParserHelper.convertToNumber(record[name]) == itemValue) {
-                            foundRecord = true;
+                            foundInFilter = true;
                         }
                         break;
                     case _.isString(itemValue):
-                        if(_.startsWith(record[name], itemValue)){   
-                            foundRecord = true;
+                        if(_.startsWith(record[name], itemValue)){
+                            foundInFilter = true;
                         }
                         break;
                     case _.isObject(itemValue):
@@ -124,6 +125,9 @@ function filter(url, obj) {
                         foundRecord = false;
                 }
             });
+            if(!foundInFilter) {
+                foundRecord = false;
+            }
         });
 
         return foundRecord;
