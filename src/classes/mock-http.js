@@ -105,7 +105,7 @@ function filter(url, obj) {
             _.each(value, (itemValue)=>{
                 switch(true) {
                     case _.isNumber(itemValue):
-                        if(record[name] == itemValue) {
+                        if(ParserHelper.convertToNumber(record[name]) == itemValue) {
                             foundRecord = true;
                         }
                         break;
