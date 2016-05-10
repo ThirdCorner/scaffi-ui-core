@@ -93,32 +93,37 @@ function filter(url, obj) {
      FILTERING
      */
     var shouldFilterRecord = function(record, filters) {
-        var foundRecord = true;
+        var foundRecord = false;
         _.each(filters, function(value, name){
             if(!_.has(record, name)) {
                 foundRecord = false;
                 return;
             } 
-            switch(true) {
-                case _.isNumber(value):
-                    if(record[name] != value) {
-                        foundRecord = false;
-                    }
-                    break;
-                case _.isString(value):
-                    if(!_.startsWith(record[name], value)){   
-                        foundRecord = false;
-                    }
-                    break;
-                case _.isObject(value):
-                    console.log("Object nested filtering on prototype mode is not yet supported. Obviously this needs to be eventually.");
-                    foundRecord = false;
-                    break;
-
-                default:
-                    console.log("Not sure how to parse the following to filter it", name, value);
-                    foundRecord = false;
+            if(!_.isArray(value)) {
+                value = [value];
             }
+            _.each(value, (itemValue)=>{
+                switch(true) {
+                    case _.isNumber(itemValue):
+                        if(record[name] == itemValue) {
+                            foundRecord = true;
+                        }
+                        break;
+                    case _.isString(itemValue):
+                        if(_.startsWith(record[name], itemValue)){   
+                            foundRecord = true;
+                        }
+                        break;
+                    case _.isObject(itemValue):
+                        console.log("Object nested filtering on prototype mode is not yet supported. Obviously this needs to be eventually.");
+                        foundRecord = false;
+                        break;
+    
+                    default:
+                        console.log("Not sure how to parse the following to filter it", name, itemValue);
+                        foundRecord = false;
+                }
+            });
         });
 
         return foundRecord;
