@@ -223,6 +223,16 @@ class DataModel {
 		this._setSocketListener();
 		
 	}
+	/*
+		Model Calls
+	 */
+	// Revert Data to last saved or fetched state
+	revert(){
+
+	}
+	/*
+		Server Calls
+	 */
 	save(){
 		var that = this;
 		return this._service.save(this.export()).then(data=>{
@@ -265,21 +275,24 @@ class DataModel {
 				return;
 			}
 			switch(true) {
-				case value instanceof DataCollection:
-					//returnObj[key] = value._export();
+				case this._isDataCollection(value):
+					returnObj[key] = value._export();
 					break;
 				case value instanceof DataModel:
 					returnObj[key] = value.export();
 					break;
+				/*
+					Not every model can have a child model that has a route. Some routes have nested arrays
+					that will be parsed when sent to the server
+				 */
 				case _.isArray(value):
-					// var returnArray = [];
-					// _.each(value, (item)=>{
-					// 	returnArray.push(this._export(item));
-					// }, this);
-					//returnObj[key] = returnArray;
+					var returnArray = [];
+					_.each(value, (item)=>{
+						returnArray.push(this.export(item));
+					}, this);
+					returnObj[key] = returnArray;
 					break;
 				default:
-					//console.log(parseData, key, _.isArray(value));
 					if(key.indexOf("_") !== 0) {
 						returnObj[key] = value;
 					}
