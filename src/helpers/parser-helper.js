@@ -225,7 +225,7 @@ ParserHelper = {
                     ParserHelper.convertToDB(value);
                     break;
                 case ParserHelper.isDate(value):
-                    structure[key] = moment(value).format('YYYY-MM-DD');
+                    structure[key] = moment(value).format();
                     break;
                 case !_.isObject(value):
                     break;
@@ -253,7 +253,7 @@ ParserHelper = {
                         break;
                     // Try as a date
                     case ParserHelper.isDateString(value):
-                        structure[key] = moment(value).toDate();
+                        structure[key] = new Date(value);
                         break;
 
                 }
