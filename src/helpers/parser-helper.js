@@ -37,7 +37,7 @@ ParserHelper = {
 
     },
     isFormController(item, name) {
-        return (_.endsWith(name, "Form") && _.has(item, "$submitted")); 
+        return ( (_.endsWith(name.toLowerCase(), "form") || name.toLowerCase() == "form") && _.has(item, "$submitted"));
     },
     getFormController($scope) {
         var form;
@@ -64,8 +64,8 @@ ParserHelper = {
                 if (this.isFormController(value, name)) {
                     $scope[name] = value;
 
-                    if(name !== "_form") {
-                        name = "_form";
+                    if(name !== "formCtrl") {
+                        name = "formCtrl";
                         $parent[name] = value;
                     }
                     $scope[name] = value;
