@@ -34,7 +34,9 @@ class Name {
 					
 					var ngAttrs = {
 						ngRequired: "required",
-						ngPattern: "pattern"
+						ngPattern: "pattern",
+						mdMinlength: "minlength",
+						mdMaxlength: "maxlength"
 					};
 					var messageTypes = {
 						required: 'Required',
@@ -70,7 +72,7 @@ class Name {
 					}, this);
 					
 					_.forEach(attrs, (value, name)=>{
-						if( (_.startsWith(name, "ng") && _.has(ngAttrs, name)) || _.startsWith(name, "md")){
+						if( (_.startsWith(name, "ng") && _.has(ngAttrs, name))){
 							var preChopName = name;
 							name = _.camelCase(name.substr(2));
 							
