@@ -44,7 +44,8 @@ class Name {
 						max: 'Value too big',
 						minlength: 'Too short',
 						maxlength: 'Too long',
-						pattern: null
+						pattern: null,
+						validate: null
 					};
 					
 					var messagesToGenerate = {};
