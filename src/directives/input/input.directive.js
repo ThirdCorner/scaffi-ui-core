@@ -1,9 +1,6 @@
 'use strict';
 
 import _ from 'lodash';
-
-import {ValidationGeneratorHelper} from '../../index.js';
-
 import {Directive} from '../../ng-decorators'; // jshint unused: false;
 //start-non-standard
 @Directive({
@@ -30,33 +27,9 @@ class Input {
 		if(attrs.class && attrs.class.indexOf("md-datepicker-input") !== -1) {
 			attrs.type = 'date';
 		}
-				
-		var messageContainer = null;
-		if(attrs.name) {
-			messageContainer = ValidationGeneratorHelper.generateMessageContainer(element, attrs.name, attrs);
-		}
-		
-		var validationAttributes = {
-			required: 'This field cannot be left empty.',
-			minlength: 'This field must be at least {minlength} characters long.',
-			maxlength: 'This field cannot be more than {maxlength} characters long.',
-			ngPattern: null
-			
-		};
-		/*
-			Because of ngMessages happening in the compile, if you try to add the messages in the pre link,
-			ngMessage directive WILL NOT pick them up.
-		 */
-		ValidationGeneratorHelper.generateMessageDiv(element, messageContainer, validationAttributes, attrs);
 		
 		return {
 			pre: (scope, element, attrs, ngModel)=>{
-			
-				
-				
-				
-				
-				
 				
 			}
 		}
