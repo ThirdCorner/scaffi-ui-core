@@ -33,7 +33,8 @@ class Name {
 					throw new Error("You've referenced the name property without filling one in. Shame shame shame.");
 				}
 				if (attrs.ngModel && !_.startsWith(attrs.name, ".")) {
-					
+
+					var tagName = element[0].tagName.toLowerCase();
 					var ngAttrs = {
 						ngRequired: "required",
 						ngPattern: "pattern",
@@ -98,8 +99,11 @@ class Name {
 					});
 					
 					_.forEach(messagesToGenerate, (value, name)=>{
-						
-						messages += `<div class="message" role="alert" ng-show="${formElemName}.$error.${name} && (formCtrl.$submitted || (${formElemName}.$touched && ${formElemName}.$invalid))">${value}</div>`
+						var showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || (${formElemName}.$touched && ${formElemName}.$invalid))`;
+						if(tagName == "div" || tagName == "span") {
+							showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || ${formElemName}.$invalid))`;
+						}
+						messages += `<div class="message" role="alert" ng-show="${showLogic}">${value}</div>`
 					});
 					
 					messages += "</div>";
