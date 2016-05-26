@@ -102,6 +102,9 @@ function filter(url, obj) {
             if(!_.isArray(value)) {
                 value = [value];
             }
+            if(value.length == 0) {
+                return;
+            }
             var foundInFilter = false;
             _.each(value, (itemValue)=>{
                 switch(true) {
