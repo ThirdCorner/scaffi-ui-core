@@ -101,7 +101,7 @@ class Name {
 					_.forEach(messagesToGenerate, (value, name)=>{
 						var showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || (${formElemName}.$touched && ${formElemName}.$invalid))`;
 						if(tagName == "div" || tagName == "span") {
-							showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || ${formElemName}.$invalid))`;
+							showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || ${formElemName}.$invalid)`;
 						}
 						messages += `<div class="message" role="alert" ng-show="${showLogic}">${value}</div>`
 					});
