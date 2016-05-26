@@ -29,7 +29,9 @@ class Name {
 		
 		return {
 			post: (scope, element, attrs, formCtrl) => {
-				
+				if(!attrs.name) {
+					throw new Error("You've referenced the name property without filling one in. Shame shame shame.");
+				}
 				if (attrs.ngModel && !_.startsWith(attrs.name, ".")) {
 					
 					var ngAttrs = {

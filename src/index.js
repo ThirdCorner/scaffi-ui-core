@@ -23,6 +23,7 @@ import StateModel from './classes/state-model';
 import MockHttp from './classes/mock-http';
 import AbstractService from './classes/abstract-service';
 import AbstractStubPage from './classes/abstract-stub-page';
+import AbstractPage from './classes/abstract-page';
 import AbstractComponent from './classes/abstract-component';
 import MockHttpFallthrough from './classes/mock-http-fallthrough';
 
@@ -146,5 +147,5 @@ export default returns;
 import {Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory} from './ng-decorators';
 export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper,
 	ParserHelper, StateModel, MockHttp, AbstractService, AbstractStubPage,
-	MockHttpFallthrough, AbstractComponent,
+	MockHttpFallthrough, AbstractComponent,AbstractPage,
 	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory};
