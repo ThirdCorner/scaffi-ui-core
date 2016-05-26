@@ -103,7 +103,7 @@ class Name {
 						if(tagName == "div" || tagName == "span") {
 							showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || ${formElemName}.$invalid)`;
 						}
-						messages += `<div class="message" role="alert" ng-show="${showLogic}">${value}</div>`
+						messages += `<div class="message" role="alert" ng-show="${showLogic}">{{${value}}}</div>`
 					});
 					
 					messages += "</div>";
