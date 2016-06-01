@@ -109,12 +109,16 @@ class DataModel {
 		return _.isArray(value) && _.has(value, "_inlineCount")
 	}
 	convertToDataCollection(key, value) {
+		
 		if(_.isArray(value) && !this._isDataCollection(value)) {
 			var childService = this._service.getService(key);
 			if(childService) {
 				var that = this;
-				value = new DataCollection();
-				value.init(childService, value, this._stateModel);
+				var instance = new DataCollection();
+				instance.init(childService, value, this._stateModel);
+				
+				value = instance;
+				
 				this._stateModel.setBaseLevel(this._service.getPropertyName() + "#" + this[ID_PROP]);
 				value._setParentLinkFunction((model)=>{
 					model[that._namespace + "Id"] = that[ID_PROP];
