@@ -70,7 +70,7 @@ class AbstractService {
         }
         return this.$http.get(url).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
+            if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
 
                 return this.stateStore.registerRequest(this, url, response.data);
@@ -95,19 +95,12 @@ class AbstractService {
         }
         return this.$http.get(url).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
+            if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
 
                 var returnData;
                 return this.stateStore.registerRequest(this, url, response.data);
                 
-                // if(id) {
-                //     returnData = new DataModel(that.route, response.data);
-                // } else {
-                //     returnData = new DataCollection(that.route, response.data);
-                // }
-
-                return returnData;
 
             }
             if(response && response.status == 404) {
@@ -175,7 +168,7 @@ class AbstractService {
         var url = this.getBaseUrl();
         return this.$http.get(url, {params: params}).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
+            if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
                 response.params = params;
                 return this.stateStore.registerRequest(this, url, response.data);
@@ -217,7 +210,7 @@ class AbstractService {
         return this.$http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
 
             that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
+            if(that.isSuccessJson(response)) {
 
                 if(!opts || !opts.silent) {
                     that.$rootScope.showSuccessToast(this._getCreatedToastMessage(response));
@@ -241,7 +234,7 @@ class AbstractService {
 
         return this.$http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
+            if(that.isSuccessJson(response)) {
 	            that.$rootScope.showSuccessToast(`Record #${updatedResource[ID_PROP]} successfully updated!`);
                 return response.data;
             }
@@ -313,6 +306,9 @@ class AbstractService {
    
     isSuccess(response) {
         return response && response.status > 199 && response.status < 300;
+    }
+    isSuccessJson(response) {
+        return this.isSuccess(response) && response.data && _.isObject(response.data);
     }
     
     _getCreatedToastMessage(response) {
