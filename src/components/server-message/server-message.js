@@ -3,6 +3,7 @@
 import template from './server-message.html!text';
 
 import {RouteConfig, Service, Component, View, Inject} from '../../ng-decorators'; // jshint unused: false
+import ErrorLogging from '../../classes/error-logging';
 import _ from "lodash";
 
 /*
@@ -37,12 +38,7 @@ class ServerError {
             }
             return that.showInfo(response);
         };
-        $rootScope.showServerError = (response)=>{
-            if(response && response.status == -1 && $rootScope.getEnvironment() == "prototype") {
-                return response;
-            }
-            return that.showPopup(response);
-        };
+
 	    $rootScope.showSuccessToast = (message) =>{
 		    return that.showSuccessToast(message);
 	    };
@@ -52,6 +48,10 @@ class ServerError {
         $rootScope.hideServerPopup = ()=>{
             return that.hidePopup();
         };
+        
+        ErrorLogging.onError((errors)=>{
+            that.showPopup(errors);
+        });
     }
     dismiss(){
         this.hidePopup();
@@ -84,51 +84,30 @@ class ServerError {
         }
     }
     showPopup(response){
-        if(response && response.status == 404) {
-            this.$state.go("404");
-            return;
-        }
+        // if(response && response.status == 404) {
+        //     this.$state.go("404");
+        //     return;
+        // }
 
-        this.showErrorPopup(response);
-        //this.$state.go("500");
+        this.showErrorPopup(errors);
     }
-    showErrorPopup(response){
+    showErrorPopup(errors){
 
 
-        this.error = {};
-        _.each(response.data, function(value, name){
-            this.error[name] = value;
-
-            try {
-                this.error[name] = JSON.decode(value)
-            } catch(e){}
-
-        }, this);
-
-        this.error.statusCode = response.status;
-
-
-        var response = this.error.response ? this.error.response : null;
-        try {
-            response = JSON.parse(response);
-
-        } catch(e){}
-
-        var preData = angular.copy(this.error);
-        preData["response"] = response;
-
-        preData = JSON.stringify(preData, true);
-        this.error.pre = preData;
-
-        this.$mdSidenav('server-error').toggle()
+        this.errors = errors;
+        if(!this.showing) {
+            this.$mdSidenav('server-error').toggle();
+            this.showing = true;
+        }
 
     }
     hidePopup(){
         var that = this;
         this.$mdSidenav('server-error').close()
             .then(function () {
-                that.error = null;
-                that.$state.go(that.$state.current, {}, {reload: true});
+                that.errors = null;
+                ErrorLogging.clearErrors();
+                //that.$state.go(that.$state.current, {}, {reload: true});
             })
 
     }

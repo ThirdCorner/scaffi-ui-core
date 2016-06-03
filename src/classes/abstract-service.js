@@ -4,6 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import ParserHelper from '../helpers/parser-helper';
 import DataModel from '../classes/data-model';
+import ErrorLogging from '../classes/error-logging';
 
 import ScaffiCore from '../index.js';
 import {Inject} from '../ng-decorators';
@@ -106,10 +107,10 @@ class AbstractService {
             if(response && response.status == 404) {
                 this.$state.go("404")
             }
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         }).catch((response) => {
             that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         });
     }
 
@@ -217,10 +218,10 @@ class AbstractService {
                 }
                 return response.data;
             }
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         }).catch( (response)=>{
             that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         });
     }
     
@@ -238,10 +239,10 @@ class AbstractService {
 	            that.$rootScope.showSuccessToast(`Record #${updatedResource[ID_PROP]} successfully updated!`);
                 return response.data;
             }
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         }).catch( (response)=>{
             that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         });
     }
 
@@ -253,10 +254,10 @@ class AbstractService {
 	            that.$rootScope.showSuccessToast(`Record #${id} successfully deleted!`);
                 return response.data;
             }
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         }).catch( (response)=>{
             that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showServerError(response);
+            return that.addServerError(response);
         });
     }
     getRoute(){
@@ -302,6 +303,13 @@ class AbstractService {
         }, this);
 
         return returnObj;
+    }
+    addServerError(response) {
+        if(response && response.status == -1 && this.$rootScope.getEnvironment() == "prototype") {
+            ErrorLogging.fireError("server", response);
+        }
+        
+        return response;
     }
    
     isSuccess(response) {
