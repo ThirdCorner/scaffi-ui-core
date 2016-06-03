@@ -4,37 +4,17 @@
         <div class="md-toolbar-tools">
             <span class="pointer" style="padding: 5px;" ng-click="vm.dismiss()"><i class="fa fa-2x fa-times-circle" style="color: darkred;"></i></span>
             <h1 >
-                {{vm.error.errorType}} Error
+                Error
             </h1>
         </div>
     </md-toolbar>
     <div class="item">
-        <label>Error</label>
-        <span class="text">{{vm.error.statusCode}} {{vm.error.statusCode === -1 ? "Is the server up?" : ""}}</span>
+        <label>Server Stack</label>
+        <span class="text" ng-repeat="error in vm.errors | filter:{type: 'server'}"><pre>{{error.error}}</pre></span>
     </div>
     <div class="item">
-        <label>Method</label>
-        <span class="text">{{vm.error.method}}</span>
-    </div>
-    <div class="item">
-        <label>API</label>
-        <span class="text">{{vm.error.url}}</span>
-    </div>
-    <div class="item">
-        <label>Request</label>
-        <span class="text"><pre>{{vm.error.request || '[none]'}}</pre></span>
-    </div>
-    <div class="item">
-        <label>Server Message</label>
-        <span class="text"><pre>{{vm.error.message || '[none]'}}</pre></span>
-    </div>
-    <div class="item">
-        <label>Response</label>
-        <span class="text" style="max-height: 400px; overflow-y: scroll;"><pre>{{vm.error.response || '[none]'}}</pre></span>
+        <label>UI Stack</label>
+        <span class="text" ng-repeat="error in vm.errors | filter:{type: 'ui'}"><pre>{{error.error}}</pre></span>
     </div>
 
-    <div class="item" id="server-error-copy-me">
-        <label>CopyMe</label>
-        <textarea class="text" type="text">{{vm.error.pre}}</textarea>
-    </div>
 </md-sidenav>
