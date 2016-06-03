@@ -83,7 +83,7 @@ class ServerError {
             this.showErrorPopup(response);
         }
     }
-    showPopup(response){
+    showPopup(errors){
         // if(response && response.status == 404) {
         //     this.$state.go("404");
         //     return;
