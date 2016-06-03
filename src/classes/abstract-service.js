@@ -309,7 +309,7 @@ class AbstractService {
             return response;
         }
         ErrorLogging.fireError("server", response);
-        return false;
+        throw new Error("Halt");
     }
    
     isSuccess(response) {
