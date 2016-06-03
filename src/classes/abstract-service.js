@@ -306,9 +306,9 @@ class AbstractService {
     }
     addServerError(response) {
         if(response && response.status == -1 && this.$rootScope.getEnvironment() == "prototype") {
-            ErrorLogging.fireError("server", response);
+            return response;
         }
-        
+        ErrorLogging.fireError("server", response);
         return response;
     }
    
