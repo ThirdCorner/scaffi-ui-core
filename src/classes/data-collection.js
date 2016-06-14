@@ -5,7 +5,7 @@ import EventListener from './event-listener';
 import ScaffiCore from '../index';
 var ID_PROP;
 import _ from 'lodash';
-
+ 
 
 module.exports = (function() {
 	

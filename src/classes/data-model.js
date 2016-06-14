@@ -16,19 +16,23 @@ class DataModel {
 		this._namespace = this._service.getPropertyName();
 		
 		this._stateModel = stateModel;
-		
-		if(_.isObject(data)) {
-			_.each(data, (value, key) =>{
-				var setVar = value;
-
-				setVar = this.convertToDataCollection(key, setVar);
-				
-				this[key] = setVar;
-				
-			}, this);
-			
-			this._setSocketListener();
+		if(!_.isObject(data)) {
+			data = {};
 		}
+
+		this.setOriginalData(data);
+
+		_.each(data, (value, key) =>{
+			var setVar = value;
+
+			setVar = this.convertToDataCollection(key, setVar);
+
+			this[key] = setVar;
+
+		}, this);
+
+		this._setSocketListener();
+
 
 
 		var that = this;
@@ -57,6 +61,13 @@ class DataModel {
 		} else {
 			this._events.on(event);
 		}
+	}
+
+	getOriginalData(){
+		return this._originalData || {};
+	}
+	setOriginalData(data) {
+		this._originalData = JSON.parse(JSON.stringify(data));
 	}
 
 	onBubble(eventFn){
@@ -278,6 +289,12 @@ class DataModel {
 			if(_.isFunction(value)) {
 				return;
 			}
+			/*
+				We don't want to export private vars
+			 */
+			if(key && _.isString(key) && (key.indexOf("_") === 0 || key.indexOf("$$") === 0)) {
+				return;
+			}
 			switch(true) {
 				case this._isDataCollection(value):
 					returnObj[key] = value._export();
@@ -297,9 +314,8 @@ class DataModel {
 					returnObj[key] = returnArray;
 					break;
 				default:
-					if(key.indexOf("_") !== 0) {
-						returnObj[key] = value;
-					}
+					returnObj[key] = value;
+
 
 			}
 
