@@ -60,6 +60,20 @@ class AbstractService {
             return that.$rootScope.showResourceError(response);
         });
     }
+    getCacheResource() {
+
+        return new Promise((resolve, reject)=>{
+            if(this.cachedResource) {
+                    resolve(this.cachedResource);
+            } else {
+                this.resource().then((data)=>{
+                    this.cachedResource = data;
+                    resolve(data);
+                });
+            }
+        })
+        
+    }
     /*
         This is a GET but won't fail the whole page if it gets a 404
      */
