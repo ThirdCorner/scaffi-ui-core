@@ -188,7 +188,7 @@ class AbstractService {
                 if( (_.isArray(responseData) || !_.has(responseData, "inlineCount")) && response.headers("content-range")){
                     var range = response.headers("content-range").split(" ");
                     try {
-                        range = range[1].split("/")[0];
+                        range = range[1].split("/")[1];
                         responseData = {
                             inlineCount: parseInt(range, 10),
                             results: responseData
