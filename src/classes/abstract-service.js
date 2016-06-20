@@ -184,9 +184,22 @@ class AbstractService {
         return this.$http.get(url, {params: params}).then( (response)=> {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccessJson(response)) {
-                ParserHelper.convertToApp(response.data);
+                var responseData = response.data;
+                if( (_.isArray(responseData) || !_.has(responseData, "inlineCount")) && response.headers("content-range")){
+                    var range = response.headers("content-range").split(" ");
+                    try {
+                        range = range[1].split("/")[0];
+                        responseData = {
+                            inlineCount: parseInt(range, 10),
+                            results: responseData
+                        };
+                    } catch(e){}
+                    
+                }
+
+                ParserHelper.convertToApp(responseData);
                 response.params = params;
-                return this.stateStore.registerRequest(this, url, response.data);
+                return this.stateStore.registerRequest(this, url, responseData);
 
             }
             that.$rootScope.showResourceError(response);
