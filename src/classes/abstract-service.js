@@ -88,6 +88,10 @@ class AbstractService {
             if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
 
+                if(!id){
+                    this.cachedResource = response.data;
+                }
+                
                 return this.stateStore.registerRequest(this, url, response.data);
 
                 // if(id) {
@@ -112,8 +116,9 @@ class AbstractService {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
-
-                var returnData;
+                if(!id){
+                    this.cachedResource = response.data;
+                }
                 return this.stateStore.registerRequest(this, url, response.data);
                 
 
