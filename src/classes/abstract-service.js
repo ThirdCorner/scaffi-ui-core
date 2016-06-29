@@ -88,17 +88,13 @@ class AbstractService {
             if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
 
+                var returnData = this.stateStore.registerRequest(this, url, response.data);
                 if(!id){
-                    this.cachedResource = response.data;
+                    this.cachedResource = returnData;
                 }
                 
-                return this.stateStore.registerRequest(this, url, response.data);
-
-                // if(id) {
-                //     return new DataModel(that.route, response.data);
-                // } else {
-                //     return new DataCollection(that.route, response.data);
-                // }
+                return returnData;
+                
             }
             return that.$rootScope.showResourceError(response);
         }).catch((response) => {
@@ -116,10 +112,11 @@ class AbstractService {
             that.sendToTestUIHarnessResponse(response);
             if(that.isSuccessJson(response)) {
                 ParserHelper.convertToApp(response.data);
+                var returnData = this.stateStore.registerRequest(this, url, response.data);
                 if(!id){
-                    this.cachedResource = response.data;
+                    this.cachedResource = returnData;
                 }
-                return this.stateStore.registerRequest(this, url, response.data);
+                return returnData;
                 
 
             }
