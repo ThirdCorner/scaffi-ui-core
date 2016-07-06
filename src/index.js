@@ -39,28 +39,45 @@ import './components/components';
 import './directives/directives';
 import './factories/factories';
 
+const ENV_MODES = ["production", "development", "qa", "localhost", "prototype", "cli"];
+
 class CoreLoader {
 	constructor(args) {
 		if (!args.config) {
-			throw new Error("You must pass the scaffi-ui config in the config property args");
+			throw new Error("You must pass the scaffi-ui config in the library initialize function args");
 		}
 		if(!_.isObject(args.config)) {
 			throw new Error("You must pass an object in the config args to initialize scaffi-ui");
 		}
 
-		if(!args.ENV){
-			throw new Error("ENV args var has not been set. Scaffi doesn't know to do prototype or not.");
+		if(args.private && (!_.isObject(args.private) || !_.isObject(args.private.config))) {
+			throw new Error("You're providing a private config which is not an object structure. Bad Human");
 		}
-		this.ENV = args.ENV;
+
 		this.config = args.config;
 
-		if(!this.ENV){
-			throw new Error("ENV global var has not been set. Scaffi doesn't know to do prototype or not.");
+		if(args.private) {
+			this.mergeConfigs(args.private);
 		}
 
-		console.log("CORE LOADED");
+		if(!this.config.config.environment){
+			throw new Error("config.environment is not provided. Scaffi doesn't know to do prototype or not.");
+		}
+
+		if(ENV_MODES.indexOf(this.config.config.environment) === -1) {
+			throw new Error("Invalid environment supplied: " + this.config.config.environment + ". Expect one of the following: " + ENV_MODES.join(", ") );
+		}
 
 
+
+	}
+	mergeConfigs(privateConfig){
+		if(!this.config.config) {
+			this.config.config = {};
+		}
+		_.forEach(privateConfig.config, (item, name)=>{
+			this.config.config[name] = item;
+		});
 	}
 	getConfigProperty(name){
 		if(_.has(this.config.config, name)) {
@@ -72,7 +89,7 @@ class CoreLoader {
 		return this.config;
 	}
 	getEnvironment(){
-		return this.ENV;
+		return this.getConfigProperty("environment");
 	}
 	
 
@@ -145,6 +162,24 @@ var returns = {
 		getApiBase(){
 			this._throwLoadError();
 			return coreLoader.getConfigProperty("apiRoute");
+		},
+		isProductionMode(){
+			return coreLoader.getEnvironment() === "production";
+		},
+		isDevelopmentMode(){
+			return coreLoader.getEnvironment() === "development";
+		},
+		isQaMode(){
+			return coreLoader.getEnvironment() === "qa";
+		},
+		isLocalhostMode(){
+			return coreLoader.getEnvironment() === "localhost";
+		},
+		isPrototypeMode(){
+			return coreLoader.getEnvironment() === "prototype";
+		},
+		isCliMode(){
+			return coreLoader.getEnvironment() === "cli";
 		},
 		getEnvironment(){
 			return coreLoader.getEnvironment();
