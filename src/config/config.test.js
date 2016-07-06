@@ -10,7 +10,7 @@ class OnConfigTest {
 	@Config()
 	//end-non-standard
 	static configFactory($provide){
-		if(ScaffiCore.config.getEnvironment() == "test") {
+		if(ScaffiCore.config.isQaMode()) {
 			console.log("config test")
 		}
 
@@ -22,9 +22,6 @@ class OnRunTest {
 	@Run()
 	//end-non-standard
 	static runFactory($rootScope){
-		if(ScaffiCore.config.getEnvironment() == "test") {
-			$rootScope.ENV = "test";
-		}
 
 	}
 }

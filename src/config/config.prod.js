@@ -9,7 +9,7 @@ class OnConfigProd{
     @Inject('$compileProvider', '$httpProvider')
     //end-non-standard
     static configFactory($compileProvider, $httpProvider){
-        if(ScaffiCore.config.getEnvironment() == "prod") {
+        if(ScaffiCore.config.isProductionMode()) {
             // disabling debug data to get better performance gain in production
             $compileProvider.debugInfoEnabled(false);
             // configure $http service to combine processing of multiple http responses received at
@@ -24,9 +24,6 @@ class OnRunProd {
     @Inject('$rootScope')
     //end-non-standard
     static runFactory($rootScope){
-        if(ScaffiCore.config.getEnvironment() == "prod") {
-            $rootScope.ENV = "prod";
-        }
     }
 }
 

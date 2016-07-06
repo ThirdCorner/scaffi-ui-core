@@ -13,7 +13,7 @@ class OnConfigPrototype {
     @Config()
     //end-non-standard
     static configFactory($provide){
-        if(ScaffiCore.config.getEnvironment() == "prototype") {
+        if(ScaffiCore.config.isPrototypeMode()) {
             $provide.decorator('$httpBackend', angular.mock.e2e.$httpBackendDecorator);
         }
 
@@ -25,9 +25,6 @@ class OnRunPrototype {
     @Run()
     //end-non-standard
     static runFactory($rootScope){
-        if(ScaffiCore.config.getEnvironment() == "prototype") {
-            $rootScope.ENV = "prototype";
-        }
 
     }
 }

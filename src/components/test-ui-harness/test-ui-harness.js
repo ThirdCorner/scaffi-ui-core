@@ -29,7 +29,7 @@ class TestUiHarness {
 	    API_BASE = ScaffiCore.config.getApiBase();
         this.responses = null;
 	    this.isTesting = false;
-	    if($rootScope.getEnvironment() == "test") {
+	    if(ScaffiCore.config.isCliMode()) {
 		    this.isTesting = true;
 	    }
         $rootScope.addTestUIHarnessResponse = (response)=>{

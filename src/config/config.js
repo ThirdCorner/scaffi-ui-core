@@ -45,9 +45,6 @@ class OnRun {
 	     */
 	    console.log(StateStore)
 
-	    $rootScope.getEnvironment = function(){
-		    return $rootScope.ENV || "";
-	    };
 		/*
 			Declare custom rootScope fns
 		 */

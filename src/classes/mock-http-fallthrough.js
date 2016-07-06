@@ -12,7 +12,7 @@ class MockHttpFallthrough {
 	@Run()
 	//end-non-standard
 	runFactory($httpBackend, postLoader){
-		if(ScaffiCore.config.getEnvironment() != "prototype") {
+		if(!ScaffiCore.config.isPrototypeMode()) {
 			return false;
 		}
 		/*

@@ -201,7 +201,7 @@ class MockHttp {
         OVERRIDES : ["LIST": (method, url, data, headers) => {}] means it won't call specific default routes so you can override
      */
     init($httpBackend, route, fixture, overrides){
-        if(ScaffiCore.config.getEnvironment() != "prototype") {
+        if(!ScaffiCore.config.isPrototypeMode()) {
             return false;
         }
         ID_PROP = ScaffiCore.config.getIdPropertyName();

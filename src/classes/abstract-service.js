@@ -334,7 +334,7 @@ class AbstractService {
         return returnObj;
     }
     addServerError(response) {
-        if(response && response.status == -1 && this.$rootScope.getEnvironment() == "prototype") {
+        if(response && response.status == -1 && ScaffiCore.config.isPrototypeMode()) {
             return response;
         }
         ErrorLogging.fireError("server", response);
