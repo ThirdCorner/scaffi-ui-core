@@ -26,7 +26,8 @@ import AbstractStubPage from './classes/abstract-stub-page';
 import AbstractPage from './classes/abstract-page';
 import AbstractComponent from './classes/abstract-component';
 import MockHttpFallthrough from './classes/mock-http-fallthrough';
-import ErrorLogging from './classes/error-logging';
+import ResponseLogger from './classes/response-logger';
+import ErrorLogger from './classes/error-logger';
 
 import './config/config.dev';
 import './config/config.prototype';
@@ -123,7 +124,7 @@ var returns = {
 		mainModule.config(function($provide) {
 			$provide.decorator("$exceptionHandler", function($delegate) {
 				return function(exception, cause) {
-					ErrorLogging.fireError("ui",exception);
+					ErrorLogger.fireError("ui",exception);
 					$delegate(exception, cause);
 
 
@@ -195,5 +196,5 @@ export default returns;
 import {Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory} from './ng-decorators';
 export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper,
 	ParserHelper, StateModel, MockHttp, AbstractService, AbstractStubPage,
-	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogging,
+	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogger, ResponseLogger,
 	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory};

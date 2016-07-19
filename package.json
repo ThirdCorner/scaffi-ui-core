@@ -26,6 +26,7 @@
     "angular-mocks": "^1.5.5",
     "angular-sanitize": "^1.5.5",
     "angular-ui-router": "^0.2.18",
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.0",
     "css": "^2.2.1",
     "lodash": "^4.11.1",

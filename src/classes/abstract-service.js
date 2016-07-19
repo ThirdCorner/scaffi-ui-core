@@ -2,13 +2,14 @@
 
 import moment from 'moment';
 import _ from 'lodash';
+import Promise from 'bluebird';
 import ParserHelper from '../helpers/parser-helper';
 import DataModel from '../classes/data-model';
-import ErrorLogging from '../classes/error-logging';
-
 import ScaffiCore from '../index.js';
+import ResponseLogger from '../classes/response-logger';
 import {Inject} from '../ng-decorators';
-var ID_PROP, API_BASE
+var ID_PROP, API_BASE;
+
 
 //start-non-standard
 @Inject('$http', '$state', '$rootScope', '$injector')
@@ -48,16 +49,20 @@ class AbstractService {
     }
     call(url){
         var that = this;
-        return this.$http.get(url).then((response)=>{
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
-                ParserHelper.convertToApp(response.data); 
-                return response.data;
-            }
-            return that.$rootScope.showResourceError(response);
-        }).catch((response) => {
-            that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showResourceError(response);
+        return new Promise((resolve, reject)=>{
+            this.$http.get(url).then((response)=>{
+                ResponseLogger.fire("get", response );
+                if(that.isSuccess(response)) {
+                    ParserHelper.convertToApp(response.data);
+                    resolve(response.data);
+                } else {
+                    reject(response);
+                }
+            }).catch((response) => {
+                ResponseLogger.fire("get", response );
+                reject(response);
+            });
+    
         });
     }
     getCacheResource() {
@@ -69,6 +74,8 @@ class AbstractService {
                 this.resource().then((data)=>{
                     this.cachedResource = data;
                     resolve(data);
+                }).catch((data)=>{
+                    reject(data);
                 });
             }
         })
@@ -83,23 +90,30 @@ class AbstractService {
         if(id) {
             url += `/${id}`;
         }
-        return this.$http.get(url).then( (response)=> {
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccessJson(response)) {
-                ParserHelper.convertToApp(response.data);
 
-                var returnData = this.stateStore.registerRequest(this, url, response.data);
-                if(!id){
-                    this.cachedResource = returnData;
+
+        return new Promise((resolve, reject)=>{
+            this.$http.get(url).then( (response)=> {
+                ResponseLogger.fire("resource", response );
+                if(that.isSuccessJson(response)) {
+                    ParserHelper.convertToApp(response.data);
+
+                    var returnData = this.stateStore.registerRequest(this, url, response.data);
+                    if(!id){
+                        this.cachedResource = returnData;
+                    }
+
+                    resolve(returnData);
+
+
+                } else {
+                    reject(response);
                 }
-                
-                return returnData;
-                
-            }
-            return that.$rootScope.showResourceError(response);
-        }).catch((response) => {
-            that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showResourceError(response);
+
+            }).catch((response) => {
+                ResponseLogger.fire("resource", response );
+                reject(response);
+            });
         });
     }
     get(id) {
@@ -108,25 +122,30 @@ class AbstractService {
         if(id) {
             url += `/${id}`;
         }
-        return this.$http.get(url).then( (response)=> {
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccessJson(response)) {
-                ParserHelper.convertToApp(response.data);
-                var returnData = this.stateStore.registerRequest(this, url, response.data);
-                if(!id){
-                    this.cachedResource = returnData;
-                }
-                return returnData;
-                
+        return new Promise((resolve, reject)=> {
+            this.$http.get(url).then((response)=> {
+                ResponseLogger.fire(id ? "get" : "list", response );
 
-            }
-            if(response && response.status == 404) {
-                this.$state.go("404")
-            }
-            return that.addServerError(response);
-        }).catch((response) => {
-            that.sendToTestUIHarnessResponse(response);
-            return that.addServerError(response);
+                if (that.isSuccessJson(response)) {
+                    ParserHelper.convertToApp(response.data);
+                    var returnData = this.stateStore.registerRequest(this, url, response.data);
+                    if (!id) {
+                        this.cachedResource = returnData;
+                    }
+
+                    resolve(returnData);
+
+                }
+                else if (response && response.status == 404) {
+                    reject(response);
+                    this.$state.go("404");
+                } else {
+                    reject(response);
+                }
+            }).catch((response) => {
+                ResponseLogger.fire(id ? "get" : "list", response );
+                reject(response);
+            });
         });
     }
 
@@ -134,8 +153,6 @@ class AbstractService {
         var that = this;
 
         var allowedParamNames = ["filter", "query", "offset", "count", "sorting", "page", "limit"];
-
-
         /*
             Break any reference with UI
          */
@@ -183,40 +200,47 @@ class AbstractService {
         
         ParserHelper.convertToDateStrings(params);
         var url = this.getBaseUrl();
-        return this.$http.get(url, {params: params}).then( (response)=> {
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccessJson(response)) {
-                var responseData = response.data;
-                if( (_.isArray(responseData) || !_.has(responseData, "inlineCount")) && response.headers("content-range")){
-                    var range = response.headers("content-range").split(" ");
-                    try {
-                        range = range[1].split("/")[1];
-                        responseData = {
-                            inlineCount: parseInt(range, 10),
-                            results: responseData
-                        };
-                    } catch(e){}
-                    
+
+        return new Promise((resolve, reject)=>{
+
+            this.$http.get(url, {params: params}).then( (response)=> {
+                ResponseLogger.fire("list", response );
+
+                if(that.isSuccessJson(response)) {
+                    var responseData = response.data;
+                    if( (_.isArray(responseData) || !_.has(responseData, "inlineCount")) && response.headers("content-range")){
+                        var range = response.headers("content-range").split(" ");
+                        try {
+                            range = range[1].split("/")[1];
+                            responseData = {
+                                inlineCount: parseInt(range, 10),
+                                results: responseData
+                            };
+                        } catch(e){}
+
+                    }
+
+                    ParserHelper.convertToApp(responseData);
+                    response.params = params;
+                    resolve(this.stateStore.registerRequest(this, url, responseData));
+
+                }
+                else {
+
+                    var data = {
+                        inlineCount: 0,
+                        results: []
+
+                    };
+                    resolve(this.stateStore.registerRequest(this, url, data));
                 }
 
-                ParserHelper.convertToApp(responseData);
-                response.params = params;
-                return this.stateStore.registerRequest(this, url, responseData);
+            }).catch((response)=>{
+                ResponseLogger.fire("list", response );
+                reject(response);
+            });
+        })
 
-            }
-            that.$rootScope.showResourceError(response);
-
-            var data = {
-                inlineCount: 0,
-                results: []
-
-            };
-            return this.stateStore.registerRequest(this, url, data);
-
-        }).catch((response)=>{
-            that.sendToTestUIHarnessResponse(response);
-            return that.$rootScope.showResourceError(response);
-        });
     }
 
     // This will POST or PUT depending if there's an Id
@@ -237,21 +261,23 @@ class AbstractService {
         newResource = angular.copy(newResource);
         ParserHelper.convertToDB(newResource);
 
-        return this.$http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
+        return new Promise((resolve, reject)=>{
+            this.$http.post(API_BASE + `${this.route}`, newResource).then( (response)=> {
+                ResponseLogger.fire("post", response );
 
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccessJson(response)) {
-
-                if(!opts || !opts.silent) {
-                    that.$rootScope.showSuccessToast(this._getCreatedToastMessage(response));
+                if(that.isSuccessJson(response)) {
+                    resolve(response.data);
+                } else {
+                    reject(response);
                 }
-                return response.data;
-            }
-            return that.addServerError(response);
-        }).catch( (response)=>{
-            that.sendToTestUIHarnessResponse(response);
-            return that.addServerError(response);
+
+
+            }).catch( (response)=>{
+                ResponseLogger.fire("post", response );
+                reject(response);
+            });
         });
+
     }
     
     put(updatedResource, opts) {
@@ -262,40 +288,41 @@ class AbstractService {
         updatedResource = angular.copy(updatedResource);
         ParserHelper.convertToDB(updatedResource);
 
-        return this.$http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccessJson(response)) {
-	            that.$rootScope.showSuccessToast(`Record #${updatedResource[ID_PROP]} successfully updated!`);
-                return response.data;
-            }
-            return that.addServerError(response);
-        }).catch( (response)=>{
-            that.sendToTestUIHarnessResponse(response);
-            return that.addServerError(response);
-        });
+        return new Promise((resolve, reject)=>{
+            this.$http.put(API_BASE+`${this.route}/${updatedResource[ID_PROP]}`, updatedResource).then( (response)=> {
+                ResponseLogger.fire("put", response );
+                if(that.isSuccessJson(response)) {
+                    resolve(response.data);
+                } else {
+                    reject(response);
+                }
+            }).catch( (response)=>{
+                ResponseLogger.fire("put", response );
+                reject(response);
+            });
+        })
     }
 
     delete(id) {
         var that = this;
-        return this.$http.delete( API_BASE+ `${this.route}/${id}`).then( (response)=> {
-            that.sendToTestUIHarnessResponse(response);
-            if(that.isSuccess(response)) {
-	            that.$rootScope.showSuccessToast(`Record #${id} successfully deleted!`);
-                return response.data;
-            }
-            return that.addServerError(response);
-        }).catch( (response)=>{
-            that.sendToTestUIHarnessResponse(response);
-            return that.addServerError(response);
+
+        return new Promise((resolve, reject)=>{
+            this.$http.delete( API_BASE+ `${this.route}/${id}`).then( (response)=> {
+                ResponseLogger.fire("delete", response );
+                if(that.isSuccess(response)) {
+
+                    resolve(response.data);
+                } else {
+                    reject(response);
+                }
+            }).catch( (response)=>{
+                ResponseLogger.fire("delete", response );
+                reject(response);
+            });
         });
     }
     getRoute(){
         return this.route;
-    }
-    sendToTestUIHarnessResponse(response){
-        if(_.has(this.$rootScope, "addTestUIHarnessResponse") && _.isFunction(this.$rootScope["addTestUIHarnessResponse"])) {
-            this.$rootScope["addTestUIHarnessResponse"](response);
-        }
     }
     convertToObject(data) {
         var returnObj = {};
@@ -332,13 +359,6 @@ class AbstractService {
         }, this);
 
         return returnObj;
-    }
-    addServerError(response) {
-        if(response && response.status == -1 && ScaffiCore.config.isPrototypeMode()) {
-            return response;
-        }
-        ErrorLogging.fireError("server", response);
-        throw new Error("Halt");
     }
    
     isSuccess(response) {
