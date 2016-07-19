@@ -162,7 +162,11 @@ var returns = {
 		},
 		getApiBase(){
 			this._throwLoadError();
-			return coreLoader.getConfigProperty("apiRoute");
+			var url = coreLoader.getConfigProperty("apiRoute");
+			if(coreLoader.getEnvironment() == "localhost" || coreLoader.getEnvironment() == "prototype") {
+				url = "http://localhost:" + coreLoader.getConfigProperty("serverLocalhostPort") + url;
+			}
+			return url;
 		},
 		isProductionMode(){
 			return coreLoader.getEnvironment() === "production";
