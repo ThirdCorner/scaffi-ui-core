@@ -28,12 +28,12 @@ import AbstractComponent from './classes/abstract-component';
 import MockHttpFallthrough from './classes/mock-http-fallthrough';
 import ResponseLogger from './classes/response-logger';
 import ErrorLogger from './classes/error-logger';
-import AbstractTheme from './classes/abstract-theme';
 
 /*
 	Themes
  */
 import AbstractMaterial from './themes/material/abstract-material';
+import AbstractBootstrap from './themes/bootstrap/abstract-bootstrap';
 
 import './config/config.dev';
 import './config/config.prototype';
@@ -221,5 +221,5 @@ export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper,
 	ParserHelper, StateModel, MockHttp, AbstractService, AbstractStubPage,
 	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogger, ResponseLogger,
 	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory,
-	AbstractMaterial
+	AbstractMaterial, AbstractBootstrap
 };
