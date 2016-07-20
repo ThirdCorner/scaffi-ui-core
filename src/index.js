@@ -28,6 +28,12 @@ import AbstractComponent from './classes/abstract-component';
 import MockHttpFallthrough from './classes/mock-http-fallthrough';
 import ResponseLogger from './classes/response-logger';
 import ErrorLogger from './classes/error-logger';
+import AbstractTheme from './classes/abstract-theme';
+
+/*
+	Themes
+ */
+import AbstractMaterial from './themes/material/abstract-material';
 
 import './config/config.dev';
 import './config/config.prototype';
@@ -51,6 +57,13 @@ class CoreLoader {
 			throw new Error("You must pass an object in the config args to initialize scaffi-ui");
 		}
 
+		if(!args.theme || !(args.theme instanceof AbstractTheme)) {
+			throw new Error("You must pass a theme args that extends AbstractTheme. You did not do that. Bad person");
+		}
+
+		this.theme = args.theme;
+
+
 		if(args.private && (!_.isObject(args.private) || !_.isObject(args.private.config))) {
 			throw new Error("You're providing a private config which is not an object structure. Bad Human");
 		}
@@ -71,6 +84,12 @@ class CoreLoader {
 
 
 
+
+	}
+	initializeTheme(appModule){
+		this.theme = new this.theme({
+			appModule: appModule
+		})
 	}
 	mergeConfigs(privateConfig){
 		if(!this.config.config) {
@@ -108,9 +127,6 @@ var returns = {
 			
 			// 3rd party modules
 			'ui.router',
-			'ngTable',
-			'angular-loading-bar',
-			'ncy-angular-breadcrumb'
 		];
 		
 		angular.element(document).ready(function() {
@@ -133,6 +149,9 @@ var returns = {
 		});
 
 		initialized = true;
+
+		coreLoader.initializeTheme(mainModule);
+
 		return mainModule;
 		
 	},
@@ -201,4 +220,6 @@ import {Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Dire
 export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper,
 	ParserHelper, StateModel, MockHttp, AbstractService, AbstractStubPage,
 	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogger, ResponseLogger,
-	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory};
+	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory,
+	AbstractMaterial
+};

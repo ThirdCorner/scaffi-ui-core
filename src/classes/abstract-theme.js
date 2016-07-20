@@ -27,7 +27,10 @@ class AbstractTheme {
 	getApp(){
 		return this.params.appModule;
 	}
-	
+	addRequires(requiresArr){
+		var mainModule = this.getApp();
+		mainModule.requires = mainModule.requires.concat(requiresArr);
+	}
 
 }
 
