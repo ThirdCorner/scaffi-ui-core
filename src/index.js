@@ -57,7 +57,7 @@ class CoreLoader {
 			throw new Error("You must pass an object in the config args to initialize scaffi-ui");
 		}
 
-		if(!args.theme || !(args.theme instanceof AbstractTheme)) {
+		if(!_.has(args, "theme")) {
 			throw new Error("You must pass a theme args that extends AbstractTheme. You did not do that. Bad person");
 		}
 
