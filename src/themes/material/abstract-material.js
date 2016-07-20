@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
-import AbstractTheme from '../classes/abstract-theme';
+import AbstractTheme from '../../classes/abstract-theme';
 
 class AbstractMaterial extends AbstractTheme {
 	constructor(args){
@@ -17,3 +17,5 @@ class AbstractMaterial extends AbstractTheme {
 		});
 	}
 }
+
+export default AbstractMaterial
