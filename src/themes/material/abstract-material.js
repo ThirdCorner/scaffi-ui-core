@@ -15,4 +15,4 @@ class AbstractMaterial extends AbstractTheme {
 	}
 }
 
-export default AbstractMaterial
+export default AbstractMaterial;

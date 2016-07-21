@@ -2,15 +2,10 @@
 
 import angular from "angular";
 import 'angular-aria';
-import 'angular-aria';
 import 'angular-animate';
-import 'angular-material';
 import 'angular-sanitize';
 import 'angular-messages';
 import 'angular-ui-router';
-import 'angular-loading-bar';
-import 'ng-table';
-import 'angular-breadcrumb';
 import _ from 'lodash';
 
 import mainModule from './ng-decorators';

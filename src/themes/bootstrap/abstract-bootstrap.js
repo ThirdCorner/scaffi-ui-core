@@ -17,4 +17,4 @@ class AbstractBootstrap extends AbstractTheme {
 	}
 }
 
-export default AbstractBootstrap
+export default AbstractBootstrap;
