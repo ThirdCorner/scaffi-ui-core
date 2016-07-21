@@ -3,18 +3,17 @@
 import _ from 'lodash';
 import AbstractTheme from '../../classes/abstract-theme';
 
+
+/*
+	We want to be able to make custom bootstrap modules that we can then include here
+ */
+
 class AbstractBootstrap extends AbstractTheme {
 	constructor(args){
 		super(args);
 		
-		this.addRequires([
-			'angular-loading-bar'
-		]);
-		this.getApp().config( (cfpLoadingBarProvider)=>{
-			cfpLoadingBarProvider.includeBar = true;
-			cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-			cfpLoadingBarProvider.includeSpinner = false;
-		});
+		this.addRequires([]);
+		
 	}
 }
 
