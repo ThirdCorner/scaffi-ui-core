@@ -51,6 +51,9 @@ class StateStore  {
 	
 
 	addToStore(request){
+		this.requestStore = _.filter(this.requestStore, (item)=>{
+			return item.url !== request.url;
+		});
 		this.requestStore.push(request);
 	}
 
