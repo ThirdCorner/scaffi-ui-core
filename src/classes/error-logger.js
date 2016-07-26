@@ -41,7 +41,7 @@ class ErrorLogger {
 		
 		_.each(this.listeners, (event)=>{
 			if(_.isFunction(event)){
-				event({type, error});
+				event({type, setError});
 			}
 		}, this);
 

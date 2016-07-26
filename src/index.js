@@ -135,6 +135,7 @@ var returns = {
 		mainModule.config(function($provide) {
 			$provide.decorator("$exceptionHandler", function($delegate) {
 				return function(exception, cause) {
+					
 					ErrorLogger.fireError("ui",exception);
 					$delegate(exception, cause);
 
