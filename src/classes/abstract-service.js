@@ -56,11 +56,11 @@ class AbstractService {
                     ParserHelper.convertToApp(response.data);
                     resolve(response.data);
                 } else {
-                    reject(new Error("Response Not Successful"));
+                    //reject(new Error("Response Not Successful"));
                 }
             }).catch((response) => {
                 ResponseLogger.fire("get", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
     
         });
@@ -75,7 +75,7 @@ class AbstractService {
                     this.cachedResource = data;
                     resolve(data);
                 }).catch((data)=>{
-                    reject(new Error("Response Not Successful"));
+                    //reject(new Error("Response Not Successful"));
                 });
             }
         })
@@ -106,13 +106,14 @@ class AbstractService {
                     resolve(returnData);
 
 
-                } else {
-                    reject(new Error("Response Not Successful"));
-                }
+                } 
+                // else {
+                //     reject(new Error("Response Not Successful"));
+                // }
 
             }).catch((response) => {
                 ResponseLogger.fire("resource", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
         });
     }
@@ -136,15 +137,15 @@ class AbstractService {
                     resolve(returnData);
 
                 }
-                else if (response && response.status == 404) {
-                    reject(new Error("Response Not Successful"));
-                    this.$state.go("404");
-                } else {
-                    reject(new Error("Response Not Successful"));
-                }
+                else if (response && response.status > 399 && response.status < 500) {
+                    this.$state.go("error");
+                } 
+                // else {
+                //     reject(new Error("Response Not Successful"));
+                // }
             }).catch((response) => {
                 ResponseLogger.fire(id ? "get" : "list", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
         });
     }
@@ -237,7 +238,7 @@ class AbstractService {
 
             }).catch((response)=>{
                 ResponseLogger.fire("list", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
         })
 
@@ -267,14 +268,15 @@ class AbstractService {
 
                 if(that.isSuccessJson(response)) {
                     resolve(response.data);
-                } else {
-                    reject(new Error("Response Not Successful"));
-                }
+                } 
+                // else {
+                //     reject(new Error("Response Not Successful"));
+                // }
 
 
             }).catch( (response)=>{
                 ResponseLogger.fire("post", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
         });
 
@@ -293,12 +295,13 @@ class AbstractService {
                 ResponseLogger.fire("put", response );
                 if(that.isSuccessJson(response)) {
                     resolve(response.data);
-                } else {
-                    reject(new Error("Response Not Successful"));
-                }
+                } 
+                // else {
+                //     reject(new Error("Response Not Successful"));
+                // }
             }).catch( (response)=>{
                 ResponseLogger.fire("put", response );
-                reject(new Error("Response Not Successful"));
+               // reject(new Error("Response Not Successful"));
             });
         })
     }
@@ -312,12 +315,13 @@ class AbstractService {
                 if(that.isSuccess(response)) {
 
                     resolve(response.data);
-                } else {
-                    reject(new Error("Response Not Successful"));
-                }
+                } 
+                // else {
+                //     reject(new Error("Response Not Successful"));
+                // }
             }).catch( (response)=>{
                 ResponseLogger.fire("delete", response );
-                reject(new Error("Response Not Successful"));
+                //reject(new Error("Response Not Successful"));
             });
         });
     }
