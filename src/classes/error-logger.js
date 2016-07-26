@@ -4,8 +4,10 @@ class ErrorLogger {
 	constructor(){
 		this.listeners = [];
 		ResponseLogger.onErrorResponse((event)=>{
-			var type = event.type;
 			var response = event.response;
+			if(response && response.status) {
+				response.statusCode = response.status;
+			}
 
 			this.fireError("server", response);
 			
