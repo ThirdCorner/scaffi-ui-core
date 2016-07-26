@@ -56,11 +56,11 @@ class AbstractService {
                     ParserHelper.convertToApp(response.data);
                     resolve(response.data);
                 } else {
-                    reject(response);
+                    reject();
                 }
             }).catch((response) => {
                 ResponseLogger.fire("get", response );
-                reject(response);
+                reject();
             });
     
         });
@@ -75,7 +75,7 @@ class AbstractService {
                     this.cachedResource = data;
                     resolve(data);
                 }).catch((data)=>{
-                    reject(data);
+                    reject();
                 });
             }
         })
@@ -107,12 +107,12 @@ class AbstractService {
 
 
                 } else {
-                    reject(response);
+                    reject();
                 }
 
             }).catch((response) => {
                 ResponseLogger.fire("resource", response );
-                reject(response);
+                reject();
             });
         });
     }
@@ -137,14 +137,14 @@ class AbstractService {
 
                 }
                 else if (response && response.status == 404) {
-                    reject(response);
+                    reject();
                     this.$state.go("404");
                 } else {
-                    reject(response);
+                    reject();
                 }
             }).catch((response) => {
                 ResponseLogger.fire(id ? "get" : "list", response );
-                reject(response);
+                reject();
             });
         });
     }
@@ -237,7 +237,7 @@ class AbstractService {
 
             }).catch((response)=>{
                 ResponseLogger.fire("list", response );
-                reject(response);
+                reject();
             });
         })
 
@@ -268,13 +268,13 @@ class AbstractService {
                 if(that.isSuccessJson(response)) {
                     resolve(response.data);
                 } else {
-                    reject(response);
+                    reject();
                 }
 
 
             }).catch( (response)=>{
                 ResponseLogger.fire("post", response );
-                reject(response);
+                reject();
             });
         });
 
@@ -294,11 +294,11 @@ class AbstractService {
                 if(that.isSuccessJson(response)) {
                     resolve(response.data);
                 } else {
-                    reject(response);
+                    reject();
                 }
             }).catch( (response)=>{
                 ResponseLogger.fire("put", response );
-                reject(response);
+                reject();
             });
         })
     }
@@ -313,11 +313,11 @@ class AbstractService {
 
                     resolve(response.data);
                 } else {
-                    reject(response);
+                    reject();
                 }
             }).catch( (response)=>{
                 ResponseLogger.fire("delete", response );
-                reject(response);
+                reject();
             });
         });
     }
