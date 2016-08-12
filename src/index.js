@@ -135,13 +135,27 @@ var returns = {
 		mainModule.config(function($provide) {
 			$provide.decorator("$exceptionHandler", function($delegate) {
 				return function(exception, cause) {
-					
+
 					ErrorLogger.fireError("ui",exception);
 					$delegate(exception, cause);
 
 
 				};
 			});
+		});
+
+		/*
+			This disables caching on IE11 if you don't have the console opened
+			Was running into this when we had a list pagination page without
+			any GET params 
+		 */
+		mainModule.config( ($httpProvider)=>{
+			if(!$httpProvider.defaults.headers.get) {
+				$httpProvider.defaults.headers.get = {};
+			}
+
+			$httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+			$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 		});
 
 		initialized = true;
@@ -178,6 +192,10 @@ var returns = {
 		getApiBase(){
 			this._throwLoadError();
 			var url = coreLoader.getConfigProperty("apiRoute");
+			/*
+				Doing this, i'm unable to pull the headers for pagination. Can't remember why  i had to do the
+				full url for these
+			 */
 			if(coreLoader.getEnvironment() == "localhost" || coreLoader.getEnvironment() == "prototype") {
 				url = "http://localhost:" + coreLoader.getConfigProperty("serverLocalhostPort") + url;
 			}

@@ -209,8 +209,13 @@ module.exports = (function() {
 			if(!_.isObject(data)){
 				data = {};
 			}
-			
-			var  model = new DataModel(this._service, data, this._stateModel);
+
+			if(data instanceof DataModel) {
+				data = data.export();
+			}
+
+			var model = new DataModel(this._service, data, this._stateModel);
+
 			
 			
 			if(this._hasBaseNamespace()) {

@@ -1,7 +1,6 @@
 'use strict';
 
 import {Config, Run, Inject} from '../ng-decorators'; // jshint unused: false
-//import routeMap from 'app/routes/routes.map.json!json';
 import _ from 'lodash';
 
 class OnConfig {
@@ -48,11 +47,6 @@ class OnRun {
 		/*
 			Declare custom rootScope fns
 		 */
-	    $rootScope.getRouteMap = function(){
-		    return null;
-		    return routeMap;
-	    };
-	    
 	    
         $rootScope.$on('$stateChangeStart', (event, toState) => {
             //console.log(event);
