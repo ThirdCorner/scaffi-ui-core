@@ -140,7 +140,7 @@ class AbstractService {
                 else if (response && response.status > 399 && response.status < 500) {
                     this.$state.go("error");
                 } 
-                // else {
+                // else { 
                 //     reject(new Error("Response Not Successful"));
                 // }
             }).catch((response) => {
