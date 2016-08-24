@@ -13,7 +13,7 @@ ParserHelper = {
         return Object.prototype.toString.call(value) == "[object Date]";
     },
     isNumberString(value){
-        if(_.isString(value) && !isNaN(value)){
+        if(_.isString(value) && value.length > 0 && !isNaN(value)){
             return true;
         }
         return false;
@@ -248,6 +248,13 @@ ParserHelper = {
                 ParserHelper.convertToApp(value);
             } else {
                 switch(true) {
+                    /*
+                     If we have an empty string, converting to null so we only 
+                     ever have to check for nulls
+                     */
+                    case _.isString(value) && value.length == 0:
+                        structure[key] = null;
+                        break;
                     case ParserHelper.isNumberString(value):
                         structure[key] = ParserHelper.convertToNumber(value);
                         break;
