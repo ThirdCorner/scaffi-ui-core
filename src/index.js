@@ -189,6 +189,10 @@ var returns = {
 			 */
 			return parentName + coreLoader.getConfigProperty("idName");
 		},
+		getVersion(){
+			this._throwLoadError();
+			return coreLoader.getConfigProperty("version") || "???";
+		},
 		getApiBase(){
 			this._throwLoadError();
 			var url = coreLoader.getConfigProperty("apiRoute");
