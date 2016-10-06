@@ -34,7 +34,7 @@ class TestUiHarness {
 		    this.isTesting = true;
 	    }
 	    ResponseLogger.onResponse((event)=>{
-		    that.addResponse(event);    
+		    that.addResponse(event.response);    
 	    });
 	    
     }
