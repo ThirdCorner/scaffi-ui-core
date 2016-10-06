@@ -25,7 +25,7 @@ var API_BASE;
 
 
 class TestUiHarness {
-    constructor($rootScope, ResponseLogger){
+    constructor($rootScope){
         var that = this;
 	    API_BASE = ScaffiCore.config.getApiBase();
         this.responses = null;
