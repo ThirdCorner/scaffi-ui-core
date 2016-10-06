@@ -32,10 +32,11 @@ class TestUiHarness {
 	    this.isTesting = false;
 	    if(ScaffiCore.config.isCliMode()) {
 		    this.isTesting = true;
+		    ResponseLogger.onResponse((event)=>{
+			    that.addResponse(event.response);
+		    });
 	    }
-	    ResponseLogger.onResponse((event)=>{
-		    that.addResponse(event.response);    
-	    });
+	   
 	    
     }
     addResponse(response){
