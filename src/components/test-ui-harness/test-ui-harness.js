@@ -1,6 +1,7 @@
 'use strict';
 import _ from 'lodash';
 import {RouteConfig, Component, View, Inject} from '../../ng-decorators'; // jshint unused: false
+import ResponseLogger from '../../classes/response-logger';
 import ScaffiCore from '../../index.js';
 var API_BASE;
 /*
@@ -24,7 +25,7 @@ var API_BASE;
 
 
 class TestUiHarness {
-    constructor($rootScope){
+    constructor($rootScope, ResponseLogger){
         var that = this;
 	    API_BASE = ScaffiCore.config.getApiBase();
         this.responses = null;
@@ -32,10 +33,10 @@ class TestUiHarness {
 	    if(ScaffiCore.config.isCliMode()) {
 		    this.isTesting = true;
 	    }
-        $rootScope.addTestUIHarnessResponse = (response)=>{
-            that.addResponse(response);
-        }
-        //this.startWatching();
+	    ResponseLogger.onResponse((event)=>{
+		    that.addResponse(event);    
+	    });
+	    
     }
     addResponse(response){
         if(this.isTesting && this.watching) {
