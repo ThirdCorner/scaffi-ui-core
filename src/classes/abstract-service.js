@@ -123,9 +123,14 @@ class AbstractService {
         if(id) {
             url += `/${id}`;
         }
-        params = params || null
+        params = params || null;
+
+        var opts = {};
+        if(params) {
+            opts.params = params;
+        }
         return new Promise((resolve, reject)=> {
-            this.$http.get(url, params).then((response)=> {
+            this.$http.get(url, opts).then((response)=> {
                 ResponseLogger.fire(id ? "get" : "list", response );
 
                 if (that.isSuccessJson(response)) {
