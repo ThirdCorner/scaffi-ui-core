@@ -117,14 +117,15 @@ class AbstractService {
             });
         });
     }
-    get(id) {
+    get(id, params) {
         var that = this;
         var url =  this.getBaseUrl();
         if(id) {
             url += `/${id}`;
         }
+        params = params || null
         return new Promise((resolve, reject)=> {
-            this.$http.get(url).then((response)=> {
+            this.$http.get(url, params).then((response)=> {
                 ResponseLogger.fire(id ? "get" : "list", response );
 
                 if (that.isSuccessJson(response)) {
