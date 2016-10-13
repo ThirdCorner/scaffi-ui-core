@@ -206,6 +206,10 @@ module.exports = (function() {
 			}
 		},
 		push(data) {
+			if(_.isString(data) || _.isNumber(data) || _.isBoolean(data)) {
+				Array.prototype.push.call(this, data);
+				return data;
+			}
 			if(!_.isObject(data)){
 				data = {};
 			}
