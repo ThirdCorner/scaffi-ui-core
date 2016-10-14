@@ -24,18 +24,6 @@ class Form {
 			throw new Error("Your form name cannot contain -. Use Camel Case.");
 		}
 		
-		if(attrs.name != "form") {
-			angular.element(element).attr("name", "_form");
-
-			/*
-				The reason we're doing this is because, if you have form elements in an isolated scope,
-				there's no way to access the form name in the compile function because it's not generated yet.
-				And you can't generate the ngMessages in the pre function of an input because the directive attr
-				doesn't attach to ng-messages properly.
-			 */
-			console.log("I had to change your form name to 'form' in order for the ng-message validators to work.");
-		}
-		
 		element.attr("novalidate", true);
 		
 		
