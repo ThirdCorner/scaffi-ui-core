@@ -3,6 +3,8 @@
 import {Directive} from '../../ng-decorators'; // jshint unused: false;
 import _ from 'lodash';
 
+import ParserHelper from '../../helpers/parser-helper';
+
 const COMPILE = new WeakMap();
 
 
@@ -34,6 +36,10 @@ class Name {
 				}
 				if (attrs.ngModel && !_.startsWith(attrs.name, ".")) {
 
+					var form = ParserHelper.getFormController(scope);
+					if(!form || !form.$name) {
+						return false;
+					}
 					var tagName = element[0].tagName.toLowerCase();
 					var ngAttrs = {
 						ngRequired: "required",
@@ -99,9 +105,9 @@ class Name {
 					});
 					
 					_.forEach(messagesToGenerate, (value, name)=>{
-						var showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || (${formElemName}.$touched && ${formElemName}.$invalid))`;
+						var showLogic = `${formElemName}.$error.${name} && (${form.$name}.$submitted || (${formElemName}.$touched && ${formElemName}.$invalid))`;
 						if(tagName == "div" || tagName == "span") {
-							showLogic = `${formElemName}.$error.${name} && (formCtrl.$submitted || ${formElemName}.$invalid)`;
+							showLogic = `${formElemName}.$error.${name} && (${form.$name}.$submitted || ${formElemName}.$invalid)`;
 						}
 						messages += `<div class="message" role="alert" ng-show="${showLogic}">${value}</div>`
 					});
