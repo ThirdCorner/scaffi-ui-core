@@ -59,7 +59,7 @@ class Name {
 					
 					var messagesToGenerate = {};
 					
-					var formElemName = "formCtrl." + attrs.name;
+					var formElemName = form.$name + "." + attrs.name;
 					var messages = `<div class="validation-messages">`;
 					
 					_.forEach(messageTypes, (value, name)=> {
