@@ -45,7 +45,7 @@ const ENV_MODES = ["production", "development", "qa", "localhost", "prototype", 
 
 class CoreLoader {
 	constructor(args) {
-		console.log("Loading");
+
 		if (!args.config) {
 			throw new Error("You must pass the scaffi-ui config in the library initialize function args");
 		}
