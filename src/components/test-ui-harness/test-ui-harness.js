@@ -85,4 +85,4 @@ class TestUiHarness {
 export default TestUiHarness;
 
 
-/* .GULP-IMPORTS-START */ import template from './test-ui-harness.html'; /* .GULP-IMPORTS-END */
+/* .GULP-IMPORTS-START */ import template from './test-ui-harness.html!text'; /* .GULP-IMPORTS-END */
