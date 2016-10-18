@@ -1,3 +1,3 @@
 'use strict';
 
-import './test-ui-harness/test-ui-harness';
+//import './test-ui-harness/test-ui-harness';
