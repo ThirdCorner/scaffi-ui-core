@@ -2,6 +2,8 @@
 
 import angular from 'angular';
 
+import ScaffiCore from "./index";
+
 const app = angular.module('app', []);
 
 // Adds redirectTo Capabilities in the route config
@@ -124,6 +126,9 @@ function Directive(options) {
 }
 
 function RouteConfig(stateName, options) {
+    if(options.mobileTemplate && ScaffiCore.config.isMobilePlatform()) {
+        options.template = options.mobileTemplate;
+    }
     return function decorator(target) {
         app.config(['$stateProvider', ($stateProvider) => {
             $stateProvider.state(stateName, Object.assign({
