@@ -141,8 +141,12 @@ function RouteConfig(stateName, options) {
              So we can have access to config for switching out mobile templates
              */
             var ScaffiCore = require("./index").default;
-            if(options.mobileTemplate && ScaffiCore.config.isMobilePlatform()) {
-                options.template = options.mobileTemplate;
+            if(ScaffiCore.config.isMobilePlatform()) {
+                if(options.template == "<ui-view></ui-view>") {
+                    options.template = "<ion-nav-view></ion-nav-view>";
+                } else if(options.mobileTemplate) {
+                    options.template = options.mobileTemplate;
+                }
             }
             
             $stateProvider.state(stateName, Object.assign({
