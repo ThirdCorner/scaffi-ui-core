@@ -108,6 +108,14 @@ function View(view) {
             options.bindToController = options.bindToController || options.bind || {};
 
             app.directive(directiveName, function () {
+                /*
+                 So we can have access to config for switching out mobile templates
+                 */
+                var ScaffiCore = require("./index").default;
+                if(options.mobileTemplate && ScaffiCore.config.isMobilePlatform()) {
+                    options.template = options.mobileTemplate;
+                }
+
                 return Object.assign(defaults, { controller: target }, options);
             });
         };

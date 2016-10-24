@@ -238,16 +238,16 @@ var returns = {
 			return coreLoader.getPlatform();
 		},
 		isWebPlatform(){
-			return coreLoader.getEnvironment() === "web";
+			return coreLoader.getPlatform() === "web";
 		},
 		isIosPlatform(){
-			return coreLoader.getEnvironment() === "ios";
+			return coreLoader.getPlatform() === "ios";
 		},
 		isAndroidPlatform(){
-			return coreLoader.getEnvironment() === "android";
+			return coreLoader.getPlatform() === "android";
 		},
 		isMobilePlatform(){
-			return coreLoader.getEnvironment() === "ios" || coreLoader.getEnvironment() === "android";
+			return coreLoader.getPlatform() === "ios" || coreLoader.getPlatform() === "android";
 		}
 	},
 	transformColumnName(name){
