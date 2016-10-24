@@ -124,14 +124,16 @@ function Directive(options) {
 }
 
 function RouteConfig(stateName, options) {
-    /*
-        So we can have access to config for switching out mobile templates 
-     */
-    var ScaffiCore = require("./index");
-    if(options.mobileTemplate && ScaffiCore.config.isMobilePlatform()) {
-        options.template = options.mobileTemplate;
-    }
+
     return function decorator(target) {
+        /*
+         So we can have access to config for switching out mobile templates
+         */
+        var ScaffiCore = require("./index").default;
+        if(options.mobileTemplate && ScaffiCore.config.isMobilePlatform()) {
+            options.template = options.mobileTemplate;
+        }
+
         app.config(['$stateProvider', ($stateProvider) => {
             $stateProvider.state(stateName, Object.assign({
                 controller: target,
@@ -140,7 +142,7 @@ function RouteConfig(stateName, options) {
         }]);
         app.controller(target.name, target);
     };
-}
+}[]
 
 // Utils functions
 function pascalCaseToCamelCase(str) {
