@@ -30,7 +30,7 @@ class TestUiHarness {
 	    API_BASE = ScaffiCore.config.getApiBase();
         this.responses = null;
 	    this.isTesting = false;
-	    if(ScaffiCore.config.isCliMode()) {
+	    if(ScaffiCore.config.isCiMode()) {
 		    this.isTesting = true;
 		    ResponseLogger.onResponse((event)=>{
 			    that.addResponse(event.response);

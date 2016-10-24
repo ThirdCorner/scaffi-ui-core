@@ -41,7 +41,7 @@ import './components/components';
 import './directives/directives';
 import './factories/factories';
 
-const ENV_MODES = ["production", "development", "qa", "localhost", "prototype", "cli"];
+const ENV_MODES = ["production", "development", "qa", "localhost", "prototype", "ci"];
 
 class CoreLoader {
 	constructor(args) {
@@ -72,6 +72,10 @@ class CoreLoader {
 
 		if(!this.config.config.environment){
 			throw new Error("config.environment is not provided. Scaffi doesn't know to do prototype or not.");
+		}
+
+		if(!this.config.config.platform){
+			throw new Error("config.platform is not provided. Scaffi doesn't know if this is web or not.");
 		}
 
 		if(ENV_MODES.indexOf(this.config.config.environment) === -1) {
@@ -106,6 +110,9 @@ class CoreLoader {
 	}
 	getEnvironment(){
 		return this.getConfigProperty("environment");
+	}
+	getPlatform(){
+		return this.getConfigProperty("platform");
 	}
 	
 
@@ -221,11 +228,26 @@ var returns = {
 		isPrototypeMode(){
 			return coreLoader.getEnvironment() === "prototype";
 		},
-		isCliMode(){
-			return coreLoader.getEnvironment() === "cli";
+		isCiMode(){
+			return coreLoader.getEnvironment() === "ci";
 		},
 		getEnvironment(){
 			return coreLoader.getEnvironment();
+		},
+		getPlatform(){
+			return coreLoader.getPlatform();
+		},
+		isWebPlatform(){
+			return coreLoader.getEnvironment() === "web";
+		},
+		isIosPlatform(){
+			return coreLoader.getEnvironment() === "ios";
+		},
+		isAndroidPlatform(){
+			return coreLoader.getEnvironment() === "android";
+		},
+		isMobilePlatform(){
+			return coreLoader.getEnvironment() === "ios" || coreLoader.getEnvironment() === "android";
 		}
 	},
 	transformColumnName(name){
