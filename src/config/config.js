@@ -3,6 +3,8 @@
 import {Config, Run, Inject} from '../ng-decorators'; // jshint unused: false
 import _ from 'lodash';
 
+import ScaffiUi from '../index.js';
+
 class OnConfig {
     //start-non-standard
     @Config()
@@ -16,19 +18,23 @@ class OnConfig {
             };
         }]);
 
-        /*********************************************************************
-         * Route provider configuration based on these config constant values
-         *********************************************************************/
-0
-        // use the HTML5 History API
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
-
-        // for any unmatched url, send to 404 page (Not page found)
-        $urlRouterProvider.otherwise('/404');
-
+        if(ScaffiUi.config.isWebPlatform()) {
+    
+            /*********************************************************************
+             * Route provider configuration based on these config constant values
+             *********************************************************************/
+            
+            // use the HTML5 History API
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+    
+            // for any unmatched url, send to 404 page (Not page found)
+            $urlRouterProvider.otherwise('/404');
+        } else {
+            $locationProvider.html5Mode(false); // disable html5 mode on mobile devices.
+        }
 
     }
 }
