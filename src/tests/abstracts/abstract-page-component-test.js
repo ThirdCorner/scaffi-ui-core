@@ -3,8 +3,6 @@
 import AbstractTest from './abstract-test';
 import ScaffiCore from '../../index';
 
-var LOCALHOST;
-
 import {CustomElementParsers} from '../includes/custom-element-test-fns';
 import TestDataHandler from '../common/test-data-handler';
 import ParserHelper from '../../helpers/parser-helper';
@@ -25,7 +23,6 @@ class AbstractPageComponentTest extends AbstractTest {
     constructor(opts) {
         super(opts);
     
-        LOCALHOST = ScaffiCore.config.getLocalhostAddress();
         this.ID_PROP =  ScaffiCore.config.getIdPropertyName();
         //if(!opts.url) {
         //    this.throwError('Must provide a url to visit for any PageComponentTest', opts);
@@ -117,10 +114,6 @@ class AbstractPageComponentTest extends AbstractTest {
 
         if (!_.isString(url) || (_.isString(url) && url.length == 0)) {
             throw new Error("Improper URL provided for Page Test");
-        }
-
-        if(url.indexOf(LOCALHOST) === -1) {
-            url = LOCALHOST + url;
         }
 
         return url;

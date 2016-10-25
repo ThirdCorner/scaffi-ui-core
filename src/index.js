@@ -204,14 +204,19 @@ var returns = {
 		getApiBase(){
 			this._throwLoadError();
 			var url = coreLoader.getConfigProperty("apiRoute");
-			/*
-				Doing this, i'm unable to pull the headers for pagination. Can't remember why  i had to do the
-				full url for these
-			 */
-			if(coreLoader.getEnvironment() == "localhost" || coreLoader.getEnvironment() == "prototype") {
-				url = "http://localhost:" + coreLoader.getConfigProperty("serverLocalhostPort") + url;
+
+			var base = coreLoader.getConfigProperty("domain");
+			if(!base) {
+				console.log("!!!No domain provided in ui config. Relying on current domain as domain to send!!!");
+				return url;
 			}
-			return url;
+			
+			if(!_.startsWith(base, "http")) {
+				throw new Error("domain must either start with http or https");
+			}
+
+			return base + url;
+
 		},
 		isProductionMode(){
 			return coreLoader.getEnvironment() === "production";

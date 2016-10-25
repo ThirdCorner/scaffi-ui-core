@@ -7,7 +7,7 @@ import ScaffiCore from '../../index';
 
 export default {
 	getBaseUrl(){
-		return ScaffiCore.config.getLocalhostAddress();
+		return ScaffiCore.config.getApiBase();
 	},
 
 	getCurrentUrl(){
