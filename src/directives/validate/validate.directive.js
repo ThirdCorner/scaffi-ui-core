@@ -1,5 +1,5 @@
 'use strict';
-
+import _ from 'lodash';
 import {Directive} from '../../ng-decorators'; // jshint unused: false;
 //start-non-standard
 @Directive({
