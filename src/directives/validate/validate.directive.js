@@ -21,8 +21,15 @@ class Validate {
 	link(scope, element, attrs, ngModel){
 		
 		ngModel.$validators.validate = function (modelValue, viewValue) {
-			
-			return scope.$eval(attrs.validate);
+			if(modelValue !== viewValue) {
+				var returnEval = scope.$eval(attrs.validate);
+				if(!_.isBoolean(returnEval)) {
+					throw new Error("You must return a boolean from " + attrs.validate);
+				}
+				return returnEval
+			} else {
+				return true;
+			}
 		};
 		
 		scope.$watch(()=>{
