@@ -26,7 +26,7 @@ class Validate {
 				if(!_.isBoolean(returnEval)) {
 					throw new Error("You must return a boolean from " + attrs.validate);
 				}
-				return returnEval
+				return returnEval;
 			} else {
 				return true;
 			}

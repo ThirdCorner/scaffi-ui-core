@@ -151,6 +151,14 @@ var returns = {
 				};
 			});
 		});
+		
+		/*
+			Adding for cookie capabilities enabled since we have it defaulted on server to work
+		 */
+		mainModule.config(($httpProvider) => {
+			$httpProvider.defaults.withCredentials = true;
+			//rest of route code
+		});
 
 		/*
 			This disables caching on IE11 if you don't have the console opened
