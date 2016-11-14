@@ -54,6 +54,7 @@ class Name {
 						minlength: 'Too short',
 						maxlength: 'Too long',
 						pattern: null,
+						validate: null,
 						validator: null
 					};
 					
