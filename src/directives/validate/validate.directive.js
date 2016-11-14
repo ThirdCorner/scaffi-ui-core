@@ -22,8 +22,9 @@ class Validate {
 
 		ctrl.$validators.validate = function(modelValue, viewValue){
 
-			console.log(attrs.validate, scope.$eval(attrs.validate));
-			var returnEval = scope.$eval(attrs.validate);			
+			var returnEval = scope.$eval(attrs.validate);
+			console.log(scope, attrs.validate, scope.$eval(attrs.validate), returnEval);
+			console.log("MODEL: ", modelValue, " view: ",  viewValue)
 			return returnEval === true;
 		};
 		
