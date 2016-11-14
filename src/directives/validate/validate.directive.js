@@ -18,26 +18,37 @@ class Validate {
 		
 	}
 	
-	link(scope, element, attrs, ngModel){
-		
-		ngModel.$validators.validate = function (modelValue, viewValue) {
-			if(modelValue !== viewValue) {
-				var returnEval = scope.$eval(attrs.validate);
-				if(!_.isBoolean(returnEval)) {
-					throw new Error("You must return a boolean from " + attrs.validate);
-				}
-				return returnEval;
-			} else {
-				return true;
+	link(scope, element, attrs, ctrl){
+
+		ctrl.$parsers.unshift((value)=>{
+			var returnEval = scope.$eval(attrs.validate);
+			if(!_.isBoolean(returnEval)) {
+				throw new Error("You must return a boolean from " + attrs.validate);
 			}
-		};
-		
-		scope.$watch(()=>{
-			return scope.$eval(attrs.validate);
-		}, ()=>{
-			ngModel.$validate();
+			
+			ctrl.$setValidity("validate", returnEval);
+			
+			return returnEval ? value : undefined;
 		});
 		
+		// ngModel.$validators.validate = function (modelValue, viewValue) {
+		// 	if(modelValue !== viewValue) {
+		// 		var returnEval = scope.$eval(attrs.validate);
+		// 		if(!_.isBoolean(returnEval)) {
+		// 			throw new Error("You must return a boolean from " + attrs.validate);
+		// 		}
+		// 		return returnEval;
+		// 	} else {
+		// 		return true;
+		// 	}
+		// };
+		//
+		// scope.$watch(()=>{
+		// 	return scope.$eval(attrs.validate);
+		// }, ()=>{
+		// 	ngModel.$validate();
+		// });
+		//
 	}
 	
 	static directiveFactory($rootScope, $state){
