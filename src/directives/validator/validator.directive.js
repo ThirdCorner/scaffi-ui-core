@@ -22,13 +22,13 @@ class Validator {
 
 		ctrl.$validators.validator = function(modelValue, viewValue){
 
-			if(!viewValue) {
+			if(!viewValue || modelValue === viewValue) {
 				return true;
 			}
 			var returnEval = scope.$eval(attrs.validator);
 			console.log(scope, attrs.validator, scope.$eval(attrs.validator), returnEval);
 			console.log("MODEL: ", modelValue, " view: ",  viewValue)
-			return returnEval === true;
+			return returnEval === true ? true : false;
 		};
 		
 		// ngModel.$validators.validator = function (modelValue, viewValue) {
