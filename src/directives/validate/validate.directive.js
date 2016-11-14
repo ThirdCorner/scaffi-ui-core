@@ -20,16 +20,12 @@ class Validate {
 	
 	link(scope, element, attrs, ctrl){
 
-		ctrl.$parsers.unshift((value)=>{
-			var returnEval = scope.$eval(attrs.validate);
-			if(!_.isBoolean(returnEval)) {
-				throw new Error("You must return a boolean from " + attrs.validate);
-			}
-			
-			ctrl.$setValidity("validate", returnEval);
-			
-			return returnEval ? value : undefined;
-		});
+		ctrl.$validators.validate = function(modelValue, viewValue){
+
+			console.log(attrs.validate, scope.$eval(attrs.validate));
+			var returnEval = scope.$eval(attrs.validate);			
+			return returnEval === true;
+		};
 		
 		// ngModel.$validators.validate = function (modelValue, viewValue) {
 		// 	if(modelValue !== viewValue) {
