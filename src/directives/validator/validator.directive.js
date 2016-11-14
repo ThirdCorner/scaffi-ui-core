@@ -3,10 +3,10 @@ import _ from 'lodash';
 import {Directive} from '../../ng-decorators'; // jshint unused: false;
 //start-non-standard
 @Directive({
-	selector: 'validate'
+	selector: 'validator'
 })
 //end-non-standard
-class Validate {
+class Validator {
 	/*
 	 If you add constructor injectors, you need to add them to the directiveFactory portion as well
 	 Otherwise, you'll get an injection error
@@ -20,19 +20,22 @@ class Validate {
 	
 	link(scope, element, attrs, ctrl){
 
-		ctrl.$validators.validate = function(modelValue, viewValue){
+		ctrl.$validators.validator = function(modelValue, viewValue){
 
-			var returnEval = scope.$eval(attrs.validate);
-			console.log(scope, attrs.validate, scope.$eval(attrs.validate), returnEval);
+			if(!viewValue) {
+				return true;
+			}
+			var returnEval = scope.$eval(attrs.validator);
+			console.log(scope, attrs.validator, scope.$eval(attrs.validator), returnEval);
 			console.log("MODEL: ", modelValue, " view: ",  viewValue)
 			return returnEval === true;
 		};
 		
-		// ngModel.$validators.validate = function (modelValue, viewValue) {
+		// ngModel.$validators.validator = function (modelValue, viewValue) {
 		// 	if(modelValue !== viewValue) {
-		// 		var returnEval = scope.$eval(attrs.validate);
+		// 		var returnEval = scope.$eval(attrs.validator);
 		// 		if(!_.isBoolean(returnEval)) {
-		// 			throw new Error("You must return a boolean from " + attrs.validate);
+		// 			throw new Error("You must return a boolean from " + attrs.validator);
 		// 		}
 		// 		return returnEval;
 		// 	} else {
@@ -41,19 +44,19 @@ class Validate {
 		// };
 		//
 		// scope.$watch(()=>{
-		// 	return scope.$eval(attrs.validate);
+		// 	return scope.$eval(attrs.validator);
 		// }, ()=>{
-		// 	ngModel.$validate();
+		// 	ngModel.$validator();
 		// });
 		//
 	}
 	
 	static directiveFactory($rootScope, $state){
 		
-		Validate.instance = new Validate($rootScope, $state);
-		return Validate.instance;
+		Validator.instance = new Validator($rootScope, $state);
+		return Validator.instance;
 	}
 }
 
-export default Validate;
+export default Validator;
 
