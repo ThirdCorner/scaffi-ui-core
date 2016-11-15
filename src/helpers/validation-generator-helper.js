@@ -25,10 +25,8 @@ var ValidationGeneratorHelper = {
 
 				if(_.has(attrs, messageAttr)) {
 					msg = attrs[messageAttr];
-				} else if(msg == null) {
-					// ng-pattern we can't define, so the user has to if they use it
-					throw new Error("You must provide an validation error message for: " + type);
 				}
+
 				var replace = `{${type}}`;
 				msg = msg.replace(replace, attrs[type]);
 
@@ -83,10 +81,6 @@ var ValidationGeneratorHelper = {
 				var elemName = containerValue.replace(".$error", "");
 
 				var ngif = elemName + ".$touched||_form.$submitted";
-
-				try{
-					msg = scope.$eval(msg);
-				}catch(e){}
 				
 				html += `<div ng-message="${prop}"><span ng-if="${ngif}">${msg}</span></div>`;
 			});
