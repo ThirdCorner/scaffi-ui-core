@@ -10,4 +10,4 @@ import './name/name.directive.js';
 import './select/select.directive.js';
 import './state-change/state-change.directive.js';
 import './textarea/textarea.directive.js';
-//import './validator/validator.directive.js';
+import './validate/validate.directive.js';
