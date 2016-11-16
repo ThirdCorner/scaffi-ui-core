@@ -262,7 +262,7 @@ ParserHelper = {
                             var split = value.split("-");
                             structure[key] = moment(new Date())
                                 .year(split[0])
-                                .month(split[1])
+                                .month(parseInt(split[1],10) - 1)
                                 .date(split[2]).toDate();
                         }  else {
                             structure[key] = new Date(value);
