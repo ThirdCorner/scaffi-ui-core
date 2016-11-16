@@ -263,7 +263,7 @@ ParserHelper = {
                             structure[key] = moment(new Date())
                                 .year(split[0])
                                 .month(split[1])
-                                .date(split[2])
+                                .date(split[2]).toDate();
                         }  else {
                             structure[key] = new Date(value);
                         }
