@@ -215,13 +215,10 @@ var returns = {
 
 			var base = coreLoader.getConfigProperty("domain");
 			if(!base) {
-				console.log("!!!No domain provided in ui config. Relying on current domain as domain to send!!!");
 				return url;
 			}
 			
-			if(!_.startsWith(base, "http")) {
-				throw new Error("domain must either start with http or https");
-			}
+			console.log("BASE url", base)
 
 			return base + url;
 
