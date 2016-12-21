@@ -222,6 +222,11 @@ var returns = {
 			if(!base) {
 				return url;
 			}
+			
+			if(!_.startsWith(base, "http") && !_.startsWith(base, "https")) {
+				base = "http://" + base;
+			}
+			
 
 			return base + url;
 
