@@ -215,7 +215,7 @@ var returns = {
 
 			var base = coreLoader.getConfigProperty("domain");
 			
-			if(coreLoader.getEnvironment() == "localhost" && coreLoader.isWebPlatform() ) {
+			if(coreLoader.getEnvironment() == "localhost" && coreLoader.getPlatform() == "web") {
 				base = "localhost:4000";
 			}
 			
