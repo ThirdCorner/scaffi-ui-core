@@ -1,7 +1,17 @@
 'use strict';
 
+
+
+import angular from "angular";
+import 'angular-aria';
+import 'angular-animate';
+import 'angular-sanitize';
+import 'angular-messages';
+import 'angular-ui-router';
+import _ from 'lodash';
+
 /*
-	Browser Support Fillers
+ Browser Support Fillers
  */
 
 /**
@@ -18,15 +28,6 @@ if (Function.prototype.name === undefined && Object.defineProperty !== undefined
 		set: function(value) {}
 	});
 }
-
-
-import angular from "angular";
-import 'angular-aria';
-import 'angular-animate';
-import 'angular-sanitize';
-import 'angular-messages';
-import 'angular-ui-router';
-import _ from 'lodash';
 
 import mainModule from './ng-decorators';
 import ValidationGeneratorHelper from './helpers/validation-generator-helper';
