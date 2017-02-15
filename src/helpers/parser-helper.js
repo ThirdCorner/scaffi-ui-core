@@ -13,7 +13,10 @@ ParserHelper = {
         return Object.prototype.toString.call(value) == "[object Date]";
     },
     isNumberString(value){
-        if(_.isString(value) && value.length > 0 && !isNaN(value)){
+        /*
+            We're checking for 0 pad because that means we don't want to convert to a number
+         */
+        if(_.isString(value) && value.length > 0 && !isNaN(value) && value[0] !== "0"){
             return true;
         }
         return false;
