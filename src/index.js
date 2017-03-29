@@ -23,7 +23,7 @@ import AbstractComponent from './classes/abstract-component';
 import MockHttpFallthrough from './classes/mock-http-fallthrough';
 import ResponseLogger from './classes/response-logger';
 import ErrorLogger from './classes/error-logger';
-
+import EventHandler from './classes/event-listener';
 /*
 	Themes
  */
@@ -299,7 +299,7 @@ export default returns;
 import {Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory} from './ng-decorators';
 export {ValidationGeneratorHelper, DataModel, DataCollection, EnvironmentHelper,
 	ParserHelper, StateModel, MockHttp, AbstractService, AbstractStubPage,
-	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogger, ResponseLogger,
+	MockHttpFallthrough, AbstractComponent,AbstractPage, ErrorLogger, ResponseLogger, EventHandler,
 	Component, View, RouteConfig, Inject, Run, Config, Service, Filter, Directive, Factory,
 	AbstractMaterial, AbstractBootstrap
 };
